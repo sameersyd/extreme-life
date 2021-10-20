@@ -1,0 +1,22 @@
+@font-face {
+	src: url(../../Resources/fonts/Circe-Regular.ttf);
+	font-family: Circe-Regular;
+}
+@font-face {
+	src: url(../../Resources/fonts/Circe-Bold.ttf);
+	font-family: Circe-Bold;
+}
+@font-face {
+	src: url(../../Resources/fonts/Circe-ExtraBold.ttf);
+	font-family: Circe-ExtraBold;
+}
+
+body {
+    background: #1D1D1E;
+    text-align: center;
+    color: #fff;
+}
+
+.hello-world {
+	font-family: Circe-Bold;
+}
