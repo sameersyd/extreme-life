@@ -45,16 +45,23 @@ body {
     margin: 0 10px 0 0;
 }
 
-.home-text {
-	font-size: 26px;
-	font-family: Circe-Regular;
-	text-align: left;
-    color: #fff;
+.home-bottom-wrap {
+	position: absolute;
+	bottom: 0;
 }
 
 .home-bottom-container {
 	width: 100%;
 	display: flex;
+	align-items: flex-end;
+	padding: 0;
+}
+
+.home-text {
+	font-size: 26px;
+	font-family: Circe-Regular;
+	text-align: left;
+    color: #fff;
 }
 
 .home-primaryBtn {
@@ -68,10 +75,11 @@ body {
 	cursor: pointer;
 	background-color: #fff;
 	text-align: center;
+	margin-left: 16px;
 }
 
 .home-secondaryBtn {
-    width: 300px;
+    width: 400px;
 	height: 75px;
 	line-height: 75px;
 	font-size: 26px;
@@ -80,4 +88,5 @@ body {
 	cursor: pointer;
 	text-align: center;
 	margin-left: 16px;
+	margin-right: 16px;
 }
