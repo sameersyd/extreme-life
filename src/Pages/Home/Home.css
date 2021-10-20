@@ -76,6 +76,38 @@ body {
 	background-color: #fff;
 	text-align: center;
 	margin-left: 16px;
+
+    z-index: 2;
+    -ms-transform: translateX(-0%);
+    transform: translateX(-0%);
+    background-repeat: no-repeat;
+    background-position: center;
+    outline-width: 0;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.home-primaryBtn:after, .home-primaryBtn:after {
+    content: "";
+    background: rgba(0,0,0,0.2);
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px!important;
+    margin-top: -120%;
+    opacity: 0;
+	border-radius: 40px;
+    transition: all 0.8s
+}
+
+.home-primaryBtn:active:after, .home-primaryBtn:active:after {
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s
 }
 
 .home-secondaryBtn {
