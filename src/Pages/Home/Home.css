@@ -12,11 +12,72 @@
 }
 
 body {
-    background: #1D1D1E;
+    background: linear-gradient(120deg, #FF4257, #F77281);
+	height: 100vh;
+}
+
+.home-container {
+	margin: 50px;
+}
+
+.home-logoImage {
+	width: 700px;
+	height: 83.05px;
+	background-image: url(../../Resources/Images/logo_text.png);
+	background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.home-title-container {
+	width: fit-content;
+	overflow: hidden;
+	margin-top: 50px;
+}
+
+.home-title {
+	width: fit-content;
+	color: white;
+	font-family: Circe-ExtraBold;
     text-align: center;
+    color: #fff;
+	font-size: 80px;
+    margin: 0 10px 0 0;
+}
+
+.home-text {
+	font-size: 26px;
+	font-family: Circe-Regular;
+	text-align: left;
     color: #fff;
 }
 
-.hello-world {
+.home-bottom-container {
+	width: 100%;
+	display: flex;
+}
+
+.home-primaryBtn {
+    width: 500px;
+	height: 70px;
+	line-height: 70px;
+	border-radius: 40px;
+	font-size: 30px;
 	font-family: Circe-Bold;
+    color: #000000;
+	cursor: pointer;
+	background-color: #fff;
+	text-align: center;
+}
+
+.home-secondaryBtn {
+    width: 300px;
+	height: 75px;
+	line-height: 75px;
+	font-size: 26px;
+	font-family: Circe-Regular;
+    color: #fff;
+	cursor: pointer;
+	text-align: center;
+	margin-left: 16px;
 }

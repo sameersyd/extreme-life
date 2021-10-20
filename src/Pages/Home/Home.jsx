@@ -4,8 +4,18 @@ import './Home.css';
 class Home extends Component {
 	render() {
         return(
-            <div>
-                <h1 className="hello-world">Hello World</h1>
+            <div className="home-container">
+                <div className="home-logoImage"/>
+                <div className="home-title-container">
+                    <h1 className="home-title">Conquer</h1>
+                    <h1 className="home-title">the</h1>
+                    <h1 className="home-title">Board</h1>
+                </div>
+                <div className="home-bottom-container">
+                    <h1 className="home-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies ultrices tincidunt nam augue non blandit cursus proin non. Non volutpat vulputate tincidunt nunc </h1>
+                    <h1 className="home-primaryBtn">Let's Go</h1>
+                    <h1 className="home-secondaryBtn">About Us</h1>
+                </div>
             </div>
         )
     }
