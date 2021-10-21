@@ -135,3 +135,81 @@ body {
 	margin-left: 16px;
 	margin-right: 16px;
 }
+
+@media (max-width: 1600px) {
+    .home-boxes {
+		width: 688.36px;
+		height: 500px;
+    }
+	.home-logoImage {
+		width: 500px;
+		height: 59.32px;
+	}
+}
+
+@media (max-width: 1150px) {
+    .home-bottom-container {
+		flex-direction: column;
+	}
+	.home-bottom-wrap {
+		position: fixed;
+		bottom: 0;
+		margin-bottom: 20px;
+		margin-right: 50px;
+	}
+	.home-primaryBtn, .home-secondaryBtn {
+		width: 100%;
+		margin-right: 0px;
+	}
+	.home-boxes {
+		width: 481.85px;
+		height: 350px;
+	}
+}
+
+@media (max-width: 950px) {
+	.home-boxes {
+		background-image: none;
+	}
+}
+
+@media (max-width: 550px) {
+	.home-logoImage {
+		width: 337.17px;
+		height: 40px;
+	}
+	.home-title {
+		font-size: 50px;
+	}
+	.home-text {
+		font-size: 18px;
+	}
+	.home-bottom-wrap {
+		margin-bottom: 10px;
+		margin-right: 20px;
+	}
+	.home-container { margin: 20px; }
+	.home-primaryBtn {
+		font-size: 24px;
+		height: 55px;
+		line-height: 55px;
+		margin: 10px 0px 0px 0px;
+	}
+	.home-secondaryBtn {
+		margin: 0px 0px 0px 0px;
+		font-size: 20px;
+	}
+}
+
+@media (max-width: 400px) {
+	.home-logoImage {
+		width: 252.87px;
+		height: 30px;
+	}
+	.home-title {
+		font-size: 40px;
+	}
+	.home-text {
+		font-size: 16px;
+	}
+}
