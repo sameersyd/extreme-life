@@ -12,8 +12,7 @@
 }
 
 body {
-    background: linear-gradient(120deg, #FF4257, #F77281);
-	height: 100vh;
+    background: linear-gradient(120deg, #FF4257 30%, #F77281);
 }
 
 .home-container {
@@ -48,6 +47,7 @@ body {
 .home-bottom-wrap {
 	position: absolute;
 	bottom: 0;
+	margin-bottom: 20px;
 }
 
 .home-bottom-container {
