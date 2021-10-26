@@ -221,3 +221,56 @@ body {
 		font-size: 16px;
 	}
 }
+
+/* Start Dialog */
+
+.home-startDialog {
+    width: 30vw 30vmin;
+    max-width: 100%;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 999;
+    background: linear-gradient(120deg, #FF4257 30%, #F77281);
+    padding: 10px 20px 40px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 40px;
+	box-shadow: 0 0 50px;
+    transition: 0.3s color;
+	color: #F77281;
+}
+
+.home-startDialog-divider {
+	border-top: 1px solid #ffffff;
+}
+
+.home-startDialog-input {
+	height: 40px;
+    color: white;
+    width: 300px;
+    padding-left: 0px;
+    border: 0px;
+    display: flex;
+    outline-width: 0;
+    font-family: Circe-Regular;
+	font-size: 16px;
+	background: #00000000;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: #FFFFFF;
+	opacity: 0.75; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	color: #FFFFFF;
+	opacity: 0.75;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+	color: #FFFFFF;
+	opacity: 0.75;
+}

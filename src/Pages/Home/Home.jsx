@@ -7,14 +7,15 @@ class Home extends Component {
         super(props)
         this.state = {
             isLoading: false,
-            showStartDialog: false
+            showStartDialog: true,
+            nickname: ""
         }
     }
 
 	render() {
         return(
             <div className={this.state.isLoading ? "home-disableInteraction" : ""}>
-                <div className={this.state.showStartDialog ? "home-container home-disableInteraction home-bgBlur" : "home-container"}>
+                <div className={this.state.showStartDialog ? "home-container home-bgBlur" : "home-container"}>
                     <div className="home-logoImage"/>
                     <div className="home-title-container">
                         <h1 className="home-title">Conquer</h1>
@@ -30,6 +31,16 @@ class Home extends Component {
                     </div>
                 </div>
                 <div className={this.state.showStartDialog ? "home-boxes home-bgBlur" : "home-boxes"}/>
+                <div className="home-startDialog">
+                    <div>
+                        <input type="text" className="home-startDialog-input" placeholder="Nick name" onChange={event => this.setState({nickname: event.target.value})} />
+                        <div class="home-startDialog-divider"/>
+                    </div>
+                    <div>
+                        <h1 className="home-text">Select actions</h1>
+                        <h1 className="home-text">Submit script</h1>
+                    </div>
+                </div>
             </div>
         )
     }
