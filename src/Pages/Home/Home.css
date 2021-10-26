@@ -15,6 +15,16 @@ body {
     background: linear-gradient(120deg, #FF4257 30%, #F77281);
 }
 
+.home-disableInteraction {
+    pointer-events: none;
+}
+
+.home-bgBlur {
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    pointer-events: none;
+}
+
 .home-boxes {
 	width: 1101.38px;
 	height: 800px;
@@ -165,6 +175,7 @@ body {
 		width: 481.85px;
 		height: 350px;
 	}
+	.home-title { font-size: 50px; }
 }
 
 @media (max-width: 950px) {
@@ -177,9 +188,6 @@ body {
 	.home-logoImage {
 		width: 337.17px;
 		height: 40px;
-	}
-	.home-title {
-		font-size: 50px;
 	}
 	.home-text {
 		font-size: 18px;
