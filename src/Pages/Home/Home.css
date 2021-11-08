@@ -222,9 +222,9 @@ body {
 	}
 }
 
-/* Start Dialog */
+/* Dialog */
 
-.home-startDialog {
+.home-dialog {
     width: 30vw 30vmin;
     max-width: 100%;
     position: fixed;
@@ -243,6 +243,33 @@ body {
 	color: #F77281;
 	align-items: center;
 }
+
+/* HowToPlay Dialog */
+
+.home-howToPlay-header-layout {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.home-howToPlay-header {
+	font-size: 28px;
+	font-family: Circe-Bold;
+	color: #fff;
+}
+
+.home-howToPlay-close {
+	height: 18px;
+	width: 18px;
+	margin-left: 38px;
+	cursor: pointer;
+	background: url("../../Resources/Images/close-x.png");
+	background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Start Dialog */
 
 .home-startDialog-divider {
 	border-top: 1px solid #ffffff;
