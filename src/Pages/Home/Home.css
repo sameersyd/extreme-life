@@ -246,27 +246,47 @@ body {
 
 /* HowToPlay Dialog */
 
+.home-howToPlay-layout {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
 .home-howToPlay-header-layout {
+	width: 100%;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	justify-content: space-between;
 }
 
 .home-howToPlay-header {
-	font-size: 28px;
-	font-family: Circe-Bold;
+	font-size: 24px;
+	font-family: Circe-ExtraBold;
 	color: #fff;
 }
 
 .home-howToPlay-close {
-	height: 18px;
-	width: 18px;
-	margin-left: 38px;
+	height: 16px;
+	width: 16px;
 	cursor: pointer;
 	background: url("../../Resources/Images/close-x.png");
 	background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+.home-howToPlay-title {
+	font-size: 18px;
+	font-family: Circe-Bold;
+	color: #fff;
+}
+
+.home-howToPlay-desc {
+	font-size: 16px;
+	font-family: Circe-Regular;
+	color: #fff;
+	margin-top: 0px;
 }
 
 /* Start Dialog */
