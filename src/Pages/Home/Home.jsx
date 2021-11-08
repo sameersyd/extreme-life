@@ -16,7 +16,7 @@ class Home extends Component {
 
     startDialog(animation) {
         return (
-            <animated.div style={animation} className="home-dialog">
+            <animated.div style={animation} className="home-startDialog">
                 <div>
                     <div className="home-startDialog-input-dialog">
                         <input type="text" className="home-startDialog-input" placeholder="Nick name" onChange={event => this.setState({nickname: event.target.value})} />
@@ -42,14 +42,26 @@ class Home extends Component {
 
     howToPlay(animation) {
         return (
-            <animated.div style={animation} className="home-dialog">
+            <animated.div style={animation} className="home-howToPlayDialog">
                 <div className="home-howToPlay-layout">
                     <div className="home-howToPlay-header-layout">
                         <h1 className="home-howToPlay-header">How to play</h1>
                         <div className="home-howToPlay-close" onClick={(e) => { this.setState({isHowToPlayDialogOpen: false}) }}/>
                     </div>
-                    <h1 className="home-howToPlay-title">How to play</h1>
-                    <h1 className="home-howToPlay-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies ultrices tincidunt nam augue non blandit cursus proin non. Non volutpat vulputate tincidunt nunc </h1>
+                    <div className="home-howToPlay-content">
+                        <h1 className="home-howToPlay-title">How to play</h1>
+                        <h1 className="home-howToPlay-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies ultrices tincidunt nam augue non blandit cursus proin non. Non Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies ultrices tincidunt nam augue non blandit cursus proin non. Non volutpat vulputate tincidunt nunc </h1>
+                        <h1 className="home-howToPlay-title">How to play</h1>
+                        <h1 className="home-howToPlay-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies ultrices tincidunt nam augue non blandit cursus proin non. Non Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies ultrices tincidunt nam augue non blandit cursus proin non. Non volutpat vulputate tincidunt nunc </h1>
+                        <h1 className="home-howToPlay-title">How to play</h1>
+                        <h1 className="home-howToPlay-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies ultrices tincidunt nam augue non blandit cursus proin non. Non Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies ultrices tincidunt nam augue non blandit cursus proin non. Non volutpat vulputate tincidunt nunc </h1>
+                        <h1 className="home-howToPlay-title">How to play</h1>
+                        <h1 className="home-howToPlay-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies ultrices tincidunt nam augue non blandit cursus proin non. Non Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies ultrices tincidunt nam augue non blandit cursus proin non. Non volutpat vulputate tincidunt nunc </h1>
+                        <h1 className="home-howToPlay-title">How to play</h1>
+                        <h1 className="home-howToPlay-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies ultrices tincidunt nam augue non blandit cursus proin non. Non Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies ultrices tincidunt nam augue non blandit cursus proin non. Non volutpat vulputate tincidunt nunc </h1>
+                        <h1 className="home-howToPlay-title">How to play</h1>
+                        <h1 className="home-howToPlay-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies ultrices tincidunt nam augue non blandit cursus proin non. Non Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ultricies ultrices tincidunt nam augue non blandit cursus proin non. Non volutpat vulputate tincidunt nunc </h1>
+                    </div>
                 </div>
             </animated.div>
         )
