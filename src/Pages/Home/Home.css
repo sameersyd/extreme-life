@@ -224,7 +224,7 @@ body {
 
 /* Dialog */
 
-.home-startDialog, .home-howToPlayDialog {
+.home-dialog, .home-howToPlayDialog {
     width: 30vw 30vmin;
     max-width: 100%;
     position: fixed;
@@ -301,16 +301,16 @@ body {
 
 /* Start Dialog */
 
-.home-startDialog-divider {
+.home-usernameDialog-divider {
 	border-top: 1px solid #ffffff;
 }
 
-.home-startDialog-input-dialog {
+.home-usernameDialog-input-dialog {
 	display: flex;
 	align-content: center;
 }
 
-.home-startDialog-input {
+.home-usernameDialog-input {
 	height: 40px;
     color: white;
     width: 300px;
@@ -340,26 +340,27 @@ body {
 
 /* Dialog Selection */
 
-.home-startDialog-selection-body {
+.home-selectionDialog-selection-body {
 	display: flex;
 	flex-direction: row;
 }
 
-.home-startDialog-selection {
+.home-selectionDialog-selection {
 	display: flex;
 	flex-direction: column;
-	margin: 40px 20px 10px 20px;
+	margin: 12px 20px 10px 20px;
 	align-items: center;
 	cursor: pointer;
 }
 
-.home-startDialog-selection-title {
+.home-selectionDialog-selection-title {
 	font-size: 16px;
 	font-family: Circe-Regular;
 	color: #fff;
 }
 
-.home-startDialog-selection-actions, .home-startDialog-selection-script {
+.home-selectionDialog-selection-actions, .home-selectionDialog-selection-script {
+	cursor: pointer;
 	width: 50px;
 	height: 50px;
 	background-image: url("../../Resources/Images/circle-cube.png");
@@ -368,14 +369,14 @@ body {
     background-position: center;
 }
 
-.home-startDialog-selection-script {
+.home-selectionDialog-selection-script {
 	background-image: url("../../Resources/Images/circle-chevron.png");
 	background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-.home-startDialog-startBtn {
+.home-usernameDialog-startBtn {
 	width: 240px;
 	height: 40px;
 	line-height: 40px;
@@ -386,6 +387,7 @@ body {
 	cursor: pointer;
 	background-color: #fff;
 	text-align: center;
+	margin-top: 28px;
 
     z-index: 2;
     -ms-transform: translateX(-0%);
@@ -399,7 +401,7 @@ body {
     overflow: hidden;
 }
 
-.home-startDialog-startBtn:after {
+.home-usernameDialog-startBtn:after {
     content: "";
     background: rgba(0,0,0,0.2);
     display: block;
@@ -413,21 +415,21 @@ body {
     transition: all 0.8s
 }
 
-.home-startDialog-startBtn:active:after {
+.home-usernameDialog-startBtn:active:after {
     padding: 0;
     margin: 0;
     opacity: 1;
     transition: 0s
 }
 
-.home-startDialog-cancel {
+.home-dialog-cancel {
 	font-size: 12px;
 	font-family: Circe-Bold;
 	color: #fff;
 	cursor: pointer;
 }
 
-.home-startDialog-generate {
+.home-usernameDialog-generate {
 	height: 25px;
 	width: 25px;
 	margin-top: 8px;
@@ -436,4 +438,59 @@ body {
 	background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+/* Scripts Dialog */
+
+.home-scriptsDialog {
+	width: 80%;
+	max-height: 90%;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 999;
+    background: linear-gradient(120deg, #FF4257 30%, #F77281);
+    padding: 10px 30px 16px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 30px;
+	box-shadow: 0 0 50px;
+    transition: 0.3s color;
+	color: #F77281;
+	align-items: center;
+}
+
+.home-scriptsDialog-container {
+	display: flex;
+	flex-wrap: wrap;
+	overflow: hidden;
+	row-gap: 20px;
+	column-gap: 20px;
+	overflow-y: auto;
+}
+
+.home-scriptsDialog-title {
+	font-size: 22px;
+	font-family: Circe-Regular;
+	color: #fff;
+	cursor: pointer;
+	white-space: nowrap
+}
+
+@media (max-width: 950px) {
+	.home-scriptsDialog-title {
+		font-size: 16px;
+	}
+}
+
+@media (max-width: 500px) {
+	.home-scriptsDialog-title {
+		font-size: 14px;
+	}
+	.home-scriptsDialog-container {
+		row-gap: 10px;
+		column-gap: 10px;
+	}
 }
