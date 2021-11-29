@@ -8,8 +8,8 @@ import Game from '../src/Pages/Game/Game.jsx';
 ReactDOM.render(
     <Router>
         <Routes>
-            <Route exact path="/" component={App}/>
-            <Route exact path="/game" component={Game}/>
+            <Route exact path="/" element={<App />}> /></Route>
+            <Route exact path="/game" element={<Game />}> /></Route>
         </Routes>
     </Router>
     , document.getElementById("root")
