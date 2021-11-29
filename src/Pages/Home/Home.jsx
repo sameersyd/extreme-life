@@ -71,14 +71,14 @@ class Home extends Component {
     }
 
     isUserNameValid(username) {
-        /* 
-          Usernames can only have: 
-          - Lowercase Letters (a-z) 
+        /*
+          Usernames can only have:
+          - Lowercase Letters (a-z)
           - Numbers (0-9)
           - Dots (.)
           - Underscores (_)
         */
-        const res = /^[a-z0-9_\.]+$/.exec(username);
+        const res = /^[a-z0-9_.]+$/.exec(username);
         const valid = !!res;
         return valid;
     }
@@ -188,7 +188,7 @@ class Home extends Component {
 	render() {
         return(
             <div className={this.state.isLoading ? "home-disableInteraction" : ""}>
-                <div className={this.state.isusernameDialogOpen || this.state.isHowToPlayDialogOpen || 
+                <div className={this.state.isusernameDialogOpen || this.state.isHowToPlayDialogOpen ||
                     this.state.isSelectionDialogOpen || this.state.isScriptsDialogOpen ? "home-container home-bgBlur" : "home-container"}>
                     <div className="home-logoImage"/>
                     <div className="home-title-container">
@@ -204,7 +204,7 @@ class Home extends Component {
                         </div>
                     </div>
                 </div>
-                <div className={this.state.isusernameDialogOpen || this.state.isHowToPlayDialogOpen || 
+                <div className={this.state.isusernameDialogOpen || this.state.isHowToPlayDialogOpen ||
                     this.state.isSelectionDialogOpen || this.state.isScriptsDialogOpen ? "home-boxes home-bgBlur" : "home-boxes"}/>
                 <Spring
                     native
