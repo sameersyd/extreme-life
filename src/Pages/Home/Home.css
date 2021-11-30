@@ -494,3 +494,53 @@ body {
 		column-gap: 10px;
 	}
 }
+
+/* Validate Script Dialog */
+
+.home-validateDialog-uploadBtn {
+	width: 240px;
+	height: 40px;
+	line-height: 40px;
+	border-radius: 40px;
+	font-size: 16px;
+	font-family: Circe-Bold;
+    color: #000000;
+	cursor: pointer;
+	background-color: #fff;
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border: 0px;
+
+    z-index: 2;
+    -ms-transform: translateX(-0%);
+    transform: translateX(-0%);
+    background-repeat: no-repeat;
+    background-position: center;
+    outline-width: 0;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.home-validateDialog-uploadBtn:after {
+    content: "";
+    background: rgba(0,0,0,0.2);
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px!important;
+    margin-top: -120%;
+    opacity: 0;
+	border-radius: 40px;
+    transition: all 0.8s
+}
+
+.home-validateDialog-uploadBtn:active:after {
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s
+}

@@ -12,10 +12,12 @@ class Home extends Component {
             isHowToPlayDialogOpen: false,
             isusernameDialogOpen: false,
             isSelectionDialogOpen: false,
-            isScriptsDialogOpen: false,
+            isValidateDialogOpen: false,
             username: "",
             userId: 0,
-            actionScripts: []
+            actionScripts: [],
+            scriptName: "",
+            script: ""
         }
         this.fetchActions()
     }
@@ -125,7 +127,7 @@ class Home extends Component {
                         <div className="home-selectionDialog-selection-actions"/>
                         <h1 className="home-selectionDialog-selection-title">Select actions</h1>
                     </div>
-                    <div className="home-selectionDialog-selection">
+                    <div className="home-selectionDialog-selection" onClick={ (e) => {this.setState({isValidateDialogOpen: true})}}>
                         <div className="home-selectionDialog-selection-script"/>
                         <h1 className="home-selectionDialog-selection-title">Submit script</h1>
                     </div>
@@ -147,6 +149,19 @@ class Home extends Component {
                     })}
                 </div>
                 <h1 className="home-dialog-cancel" onClick={(e) => { this.setState({isScriptsDialogOpen: false}) }}>Cancel</h1>
+            </animated.div>
+        )
+    }
+
+    validateScript(animation) {
+        return (
+            <animated.div style={animation} className="home-dialog">
+                <div>
+                    <input type="text" className="home-usernameDialog-input" placeholder="Script name" value={this.state.scriptName} onChange={event => this.setState({ scriptName: event.target.value })} />
+                    <div class="home-usernameDialog-divider"/>
+                </div>
+                <button className="home-validateDialog-uploadBtn" onClick={(e) => { this.selectFile() }}>Upload script</button>
+                <h1 className="home-dialog-cancel" onClick={(e) => { this.setState({isValidateDialogOpen: false}) }}>Cancel</h1>
             </animated.div>
         )
     }
@@ -185,11 +200,32 @@ class Home extends Component {
         })
     }
 
+    shouldBlurBackground() {
+        return this.state.isusernameDialogOpen || this.state.isHowToPlayDialogOpen || 
+        this.state.isSelectionDialogOpen || this.state.isScriptsDialogOpen || this.state.isValidateDialogOpen
+    }
+
+    // Upload Script Dialog -> Trigger [ <input type="file" ] when button pressed
+    selectFile = () => {this.refs.fileUploader.click();}
+
+    // Upload File Dialog -> choose file - selected
+    onFileSelect = (e) => {
+        let file = e.target.files[0]
+        if(file != null) {
+            this.setState({ script: file }, () => {
+                this.callValidateAPI()
+            })
+        }
+    }
+
+    callValidateAPI() {
+        console.log('Script =', this.state.script)
+    }
+
 	render() {
         return(
             <div className={this.state.isLoading ? "home-disableInteraction" : ""}>
-                <div className={this.state.isusernameDialogOpen || this.state.isHowToPlayDialogOpen ||
-                    this.state.isSelectionDialogOpen || this.state.isScriptsDialogOpen ? "home-container home-bgBlur" : "home-container"}>
+                <div className={this.shouldBlurBackground() ? "home-container home-bgBlur" : "home-container"}>
                     <div className="home-logoImage"/>
                     <div className="home-title-container">
                         <h1 className="home-title">Conquer</h1>
@@ -204,8 +240,8 @@ class Home extends Component {
                         </div>
                     </div>
                 </div>
-                <div className={this.state.isusernameDialogOpen || this.state.isHowToPlayDialogOpen ||
-                    this.state.isSelectionDialogOpen || this.state.isScriptsDialogOpen ? "home-boxes home-bgBlur" : "home-boxes"}/>
+                <div className={this.shouldBlurBackground() ? "home-boxes home-bgBlur" : "home-boxes"}/>
+                <input type='file' onChange={(e) => this.onFileSelect(e)} accept="file/*, .py" ref="fileUploader" style={{display:"none"}} />
                 <Spring
                     native
                     from= {{ transform: 'translate(-50%, 200%)' }}
@@ -233,6 +269,13 @@ class Home extends Component {
                     to={{ transform: this.state.isScriptsDialogOpen ? 'translate(-50%, -50%)' : 'translate(-50%, 1000%)' }}
                 >
                     {(animation)=>(this.actionScripts(animation))}
+                </Spring>
+                <Spring
+                    native
+                    from= {{ transform: 'translate(-50%, 200%)' }}
+                    to={{ transform: this.state.isValidateDialogOpen ? 'translate(-50%, -50%)' : 'translate(-50%, 1000%)' }}
+                >
+                    {(animation)=>(this.validateScript(animation))}
                 </Spring>
             </div>
         )
