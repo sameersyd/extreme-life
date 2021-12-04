@@ -4,10 +4,12 @@ import * as BABYLON from 'babylonjs';
 import {GUI, GridMaterial} from "babylonjs-gui";
 
 
+const canvas = document.getElementById("renderCanvas");
+const engine = new BABYLON.Engine(canvas);
 class Game extends Component {
 
-    getscene() {
-        var scene = new BABYLON.Scene(BABYLON.Engine);
+    render() {
+        var scene = new BABYLON.Scene(engine);
         var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
         camera.setTarget(BABYLON.Vector3.Zero());
         camera.attachControl( scene , true);
@@ -72,15 +74,10 @@ class Game extends Component {
         ground.material.majorUnitFrequency = 1;
         ground.material.minorUnitVisibility  = 0;
         ground.material.gridOffset = new BABYLON.Vector3(0.5, 0, 0);
+        engine.runRenderLoop(() => {
+            scene.render();
+        });
         return scene
-    }
-
-
-    render() {
-        return (
-            <div>
-                Hello World
-            </div>)
     }
 }
 
