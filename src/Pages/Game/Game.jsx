@@ -1,8 +1,6 @@
 import React from "react";
-import { FreeCamera, Vector3, HemisphericLight, MeshBuilder } from "@babylonjs/core";
 import SceneComponent from 'babylonjs-hook'; // if you install 'babylonjs-hook' NPM.
-import * as BABYLON from 'babylonjs'
-import "../../App.css";
+import * as BABYLON from '@babylonjs/core'
 
 let box;
 
@@ -14,13 +12,12 @@ const onSceneReady = (scene) => {
     var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
     light.intensity = 0.7;
     var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2, segments: 32}, scene);
+    box = BABYLON.MeshBuilder.CreateBox("box", {size: 2}, scene);
     sphere.position.y = 1;
-    var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
+    box.position.y = 3;
+    BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
 };
 
-/**
- * Will run on every frame render.  We are spinning the box on y-axis.
- */
 const onRender = (scene) => {
   if (box !== undefined) {
     var deltaTimeInMillis = scene.getEngine().getDeltaTime();
@@ -30,8 +27,9 @@ const onRender = (scene) => {
   }
 };
 
-export default () => (
+const Game = () => (
   <div>
     <SceneComponent antialias onSceneReady={onSceneReady} onRender={onRender} id="my-canvas" />
   </div>
 );
+export default Game;
