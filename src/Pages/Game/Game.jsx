@@ -18,18 +18,11 @@ const onSceneReady = (scene) => {
     BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
 };
 
-const onRender = (scene) => {
-  if (box !== undefined) {
-    var deltaTimeInMillis = scene.getEngine().getDeltaTime();
 
-    const rpm = 10;
-    box.rotation.y += (rpm / 60) * Math.PI * 2 * (deltaTimeInMillis / 1000);
-  }
-};
 
 const Game = () => (
   <div>
-    <SceneComponent antialias onSceneReady={onSceneReady} onRender={onRender} id="my-canvas" />
+    <SceneComponent antialias onSceneReady={onSceneReady} id="my-canvas" />
   </div>
 );
 export default Game;
