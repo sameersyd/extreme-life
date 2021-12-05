@@ -17,6 +17,7 @@ class Home extends Component {
             userId: 0,
             actionScripts: [],
             scriptName: "",
+            scriptId: "",
             script: ""
         }
         this.fetchActions()
@@ -30,13 +31,13 @@ class Home extends Component {
             (response) => {
                 if(response['status'] === 200) {
                     let data = [
-                        { "script_name": "Side shifter" }, { "script_name": "Attack 1" },
-                        { "script_name": "Attack 2" }, { "script_name": "Attack 3" },
-                        { "script_name": "Round Attack" }, { "script_name": "Trigger shift" },
-                        { "script_name": "Slider attack 1" }, { "script_name": "Slider attack 2" },
-                        { "script_name": "Cell Box" }, { "script_name": "Timed Boxer" },
-                        { "script_name": "Flex Attack 1" }, { "script_name": "Flex Attack 2" },
-                        { "script_name": "Flex Attack 3" }, { "script_name": "Random Shift" }
+                        { "script_name": "Side shifter", "script_id": 0 },
+                        { "script_name": "Attack 2", "script_id": 0 },
+                        { "script_name": "Round Attack", "script_id": 0 },
+                        { "script_name": "Slider attack 1", "script_id": 0},
+                        { "script_name": "Cell Box", "script_id": 0 },
+                        { "script_name": "Flex Attack 1", "script_id": 0},
+                        { "script_name": "Flex Attack 3", "script_id": 0 },
                     ]
                     // var data = JSON.stringify(response['data'])
                     this.setState({ actionScripts: data })
@@ -160,10 +161,18 @@ class Home extends Component {
                     <input type="text" className="home-usernameDialog-input" placeholder="Script name" value={this.state.scriptName} onChange={event => this.setState({ scriptName: event.target.value })} />
                     <div class="home-usernameDialog-divider"/>
                 </div>
-                <button className="home-validateDialog-uploadBtn" onClick={(e) => { this.selectFile() }}>Upload script</button>
+                <button className="home-validateDialog-uploadBtn" onClick={(e) => { this.uploadScript() }}>Upload script</button>
                 <h1 className="home-dialog-cancel" onClick={(e) => { this.setState({isValidateDialogOpen: false}) }}>Cancel</h1>
             </animated.div>
         )
+    }
+
+    uploadScript() {
+        if(this.state.scriptName === "") {
+            alert('Enter script name')
+            return
+        }
+        this.selectFile()
     }
 
     howToPlay(animation) {
@@ -213,13 +222,34 @@ class Home extends Component {
         let file = e.target.files[0]
         if(file != null) {
             this.setState({ script: file }, () => {
-                this.callValidateAPI()
+                this.callValidateAPI(file)
             })
         }
     }
 
-    callValidateAPI() {
-        console.log('Script =', this.state.script)
+    callValidateAPI(file) {
+        this.setState({ isLoading: true }, () => {
+            var formData = new FormData();
+            formData.append("file", file);
+            var config = {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'multipart/form-data'
+                },
+                params: {'script_name': this.state.scriptName}
+            };
+            Axios.post("http://localhost:8000/actionscript", formData, config).then(
+                (response) => {
+                    if(response['status'] === 200) {
+                        var data = JSON.stringify(response['data'])
+                        this.setState({ 
+                            isLoading: false, 
+                            scriptId: data['script_id'] 
+                        })
+                    }
+                }
+            );
+        })
     }
 
 	render() {
