@@ -13,6 +13,7 @@ class Home extends Component {
             isusernameDialogOpen: false,
             isSelectionDialogOpen: false,
             isValidateDialogOpen: false,
+            isMatchingDialogOpen: false,
             username: "",
             userId: 0,
             actionScripts: [],
@@ -176,10 +177,17 @@ class Home extends Component {
 
     uploadScript() {
         if(this.state.scriptName === "") {
-            alert('Enter script name')
-            return
+            alert('Enter script name'); return
         }
         this.selectFile()
+    }
+
+    matchingDesign(animation) {
+        return (
+            <animated.div style={animation} className="home-dialog">
+                <h1 className="home-matchDialog-header">Matching User...</h1>
+            </animated.div>
+        )
     }
 
     howToPlay(animation) {
@@ -188,7 +196,7 @@ class Home extends Component {
                 <div className="home-howToPlay-layout">
                     <div className="home-howToPlay-header-layout">
                         <h1 className="home-howToPlay-header">How to play</h1>
-                        <div className="home-howToPlay-close" onClick={(e) => { this.setState({isHowToPlayDialogOpen: false}) }}/>
+                        <div className="home-howToPlay-close" onClick={(e) => { this.setState({ isHowToPlayDialogOpen: false }) }}/>
                     </div>
                     <div className="home-howToPlay-content">
                         <h1 className="home-howToPlay-title">How to play</h1>
@@ -217,8 +225,8 @@ class Home extends Component {
     }
 
     shouldBlurBackground() {
-        return this.state.isusernameDialogOpen || this.state.isHowToPlayDialogOpen || 
-        this.state.isSelectionDialogOpen || this.state.isScriptsDialogOpen || this.state.isValidateDialogOpen
+        return this.state.isusernameDialogOpen || this.state.isHowToPlayDialogOpen || this.state.isSelectionDialogOpen || 
+        this.state.isScriptsDialogOpen || this.state.isValidateDialogOpen || this.state.isMatchingDialogOpen
     }
 
     // Upload Script Dialog -> Trigger [ <input type="file" ] when button pressed
@@ -262,7 +270,9 @@ class Home extends Component {
     }
 
     matchPlayer() {
-        console.log('Matching...')
+        this.setState({ isLoading: true, isMatchingDialogOpen: true }, () => {
+            
+        })
     }
 
 	render() {
@@ -319,6 +329,13 @@ class Home extends Component {
                     to={{ transform: this.state.isValidateDialogOpen ? 'translate(-50%, -50%)' : 'translate(-50%, 1000%)' }}
                 >
                     {(animation)=>(this.validateScript(animation))}
+                </Spring>
+                <Spring
+                    native
+                    from= {{ transform: 'translate(-50%, 200%)' }}
+                    to={{ transform: this.state.isMatchingDialogOpen ? 'translate(-50%, -50%)' : 'translate(-50%, 1000%)' }}
+                >
+                    {(animation)=>(this.matchingDesign(animation))}
                 </Spring>
             </div>
         )
