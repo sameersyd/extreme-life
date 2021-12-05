@@ -31,13 +31,13 @@ class Home extends Component {
             (response) => {
                 if(response['status'] === 200) {
                     let data = [
-                        { "script_name": "Side shifter", "script_id": 0 },
-                        { "script_name": "Attack 2", "script_id": 0 },
-                        { "script_name": "Round Attack", "script_id": 0 },
-                        { "script_name": "Slider attack 1", "script_id": 0},
-                        { "script_name": "Cell Box", "script_id": 0 },
-                        { "script_name": "Flex Attack 1", "script_id": 0},
-                        { "script_name": "Flex Attack 3", "script_id": 0 },
+                        { "script_name": "Side shifter", "script_id": 425345 },
+                        { "script_name": "Attack 2", "script_id": 987439 },
+                        { "script_name": "Round Attack", "script_id": 209257 },
+                        { "script_name": "Slider attack 1", "script_id": 874365 },
+                        { "script_name": "Cell Box", "script_id": 983465 },
+                        { "script_name": "Flex Attack 1", "script_id": 982374},
+                        { "script_name": "Flex Attack 3", "script_id": 297434 },
                     ]
                     // var data = JSON.stringify(response['data'])
                     this.setState({ actionScripts: data })
@@ -145,11 +145,18 @@ class Home extends Component {
                     {this.state.actionScripts.map((aObj, k) => {
                         const script_name = aObj.script_name
                         return(
-                            <h1 className="home-scriptsDialog-title">{script_name}</h1>
+                            <h1 className="home-scriptsDialog-title" onClick={(e) => { 
+                                this.setState({
+                                    scriptId: aObj.script_id, 
+                                    isScriptsDialogOpen: false,
+                                    isSelectionDialogOpen: false
+                                })
+                                this.matchPlayer()
+                            }}>{script_name}</h1>
                         )
                     })}
                 </div>
-                <h1 className="home-dialog-cancel" onClick={(e) => { this.setState({isScriptsDialogOpen: false}) }}>Cancel</h1>
+                <h1 className="home-dialog-cancel" onClick={(e) => { this.setState({ isScriptsDialogOpen: false }) }}>Cancel</h1>
             </animated.div>
         )
     }
@@ -243,13 +250,19 @@ class Home extends Component {
                     if(response['status'] === 200) {
                         var data = JSON.stringify(response['data'])
                         this.setState({ 
-                            isLoading: false, 
-                            scriptId: data['script_id'] 
+                            isLoading: false, scriptId: data['script_id'], 
+                            isValidateDialogOpen: false,
+                            isSelectionDialogOpen: false
                         })
+                        this.matchPlayer()
                     }
                 }
             );
         })
+    }
+
+    matchPlayer() {
+        console.log('Matching...')
     }
 
 	render() {
