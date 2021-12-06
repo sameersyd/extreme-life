@@ -21,6 +21,44 @@
     pointer-events: none;
 }
 
-.home-container {
-	margin: 50px;
+.match-container {
+	margin: 10px 50px 50px 50px;
+}
+
+.match-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.match-logoImage {
+	width: 337.15px;
+	height: 40px;
+	background-image: url(../../Resources/Images/logo_text.png);
+	background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.match-username-container {
+	display: flex;
+    flex-direction: row;
+    margin: auto;
+}
+
+.match-username {
+	font-family: Circe-Bold;
+    font-size: 30px;
+    color: white;
+    align-self: flex-end;
+    margin-bottom: 30px;
+}
+
+.match-VS {
+    font-family: Circe-ExtraBold;
+    font-size: 40px;
+    color: white;
+    margin-left: 30px;
+    margin-right: 30px;
+    align-self: flex-end;
 }
