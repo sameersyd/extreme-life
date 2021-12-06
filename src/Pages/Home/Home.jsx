@@ -279,10 +279,10 @@ class Home extends Component {
                     if(response['status'] === 200) {
                         var data = response['data']
                         console.log(data)
-                        // if(data['match_is_complete']) { this.playerMatched() }
-                        // else {
-                            
-                        // }
+                        if(data['match_is_complete']) { this.playerMatched() }
+                        else {
+                            // listen for Match
+                        }
                     }
                 }
             );
