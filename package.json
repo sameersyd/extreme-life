@@ -3,15 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babylonjs/core": "^4.2.0",
     "@babylonjs/gui": "^4.2.0",
     "@testing-library/jest-dom": "latest",
     "@testing-library/react": "latest",
     "@testing-library/user-event": "latest",
     "axios": "latest",
-    "babylonjs": "latest",
+    "babylonjs": "^4.2.0",
     "babylonjs-gui": "^4.2.0",
     "babylonjs-hook": "^0.1.0",
+    "npm-gui": "^3.1.1",
     "react": "latest",
     "react-babylonjs": "^3.0.30",
     "react-dom": "latest",
@@ -43,5 +43,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babylonjs/core": "^4.2.0",
+    "@babylonjs/materials": "^4.2.0"
   }
 }

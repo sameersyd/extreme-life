@@ -1,12 +1,14 @@
 @font-face {
-	src: url(../../Resources/fonts/Circe-Regular.ttf);
-	font-family: Circe-Regular;
+    src: url(../../Resources/fonts/Circe-Regular.ttf);
+    font-family: Circe-Regular;
 }
+
 @font-face {
-	src: url(../../Resources/fonts/Circe-Bold.ttf);
-	font-family: Circe-Bold;
+    src: url(../../Resources/fonts/Circe-Bold.ttf);
+    font-family: Circe-Bold;
 }
+
 @font-face {
-	src: url(../../Resources/fonts/Circe-ExtraBold.ttf);
-	font-family: Circe-ExtraBold;
+    src: url(../../Resources/fonts/Circe-ExtraBold.ttf);
+    font-family: Circe-ExtraBold;
 }
