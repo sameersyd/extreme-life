@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './Home.css';
 import { Spring, animated } from 'react-spring'
 import Axios from 'axios';
-import { TaskTimer } from 'tasktimer';
 
 class Home extends Component {
 
@@ -282,9 +281,7 @@ class Home extends Component {
                         console.log(data)
                         // if(data['match_is_complete']) { this.playerMatched() }
                         // else {
-                            const timer = new TaskTimer(1000);
-                            timer.on('listen_match', () => { console.log('Listening...') })
-                            timer.start();
+                            
                         // }
                     }
                 }
