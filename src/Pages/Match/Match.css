@@ -1,0 +1,26 @@
+@font-face {
+	src: url(../../Resources/fonts/Circe-Regular.ttf);
+	font-family: Circe-Regular;
+}
+@font-face {
+	src: url(../../Resources/fonts/Circe-Bold.ttf);
+	font-family: Circe-Bold;
+}
+@font-face {
+	src: url(../../Resources/fonts/Circe-ExtraBold.ttf);
+	font-family: Circe-ExtraBold;
+}
+
+.match-disableInteraction {
+    pointer-events: none;
+}
+
+.match-bgBlur {
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    pointer-events: none;
+}
+
+.home-container {
+	margin: 50px;
+}
