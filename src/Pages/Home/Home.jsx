@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Home.css';
 import { Spring, animated } from 'react-spring'
 import Axios from 'axios';
+import { TaskTimer } from 'tasktimer';
 
 class Home extends Component {
 
@@ -18,7 +19,7 @@ class Home extends Component {
             userId: 0,
             actionScripts: [],
             scriptName: "",
-            scriptId: "",
+            scriptId: 0,
             script: ""
         }
         this.fetchActions()
@@ -40,7 +41,7 @@ class Home extends Component {
                         { "script_name": "Flex Attack 1", "script_id": 982374},
                         { "script_name": "Flex Attack 3", "script_id": 297434 },
                     ]
-                    // var data = JSON.stringify(response['data'])
+                    // var data = response['data']
                     this.setState({ actionScripts: data })
                 }
             }
@@ -62,7 +63,7 @@ class Home extends Component {
             Axios.post("http://localhost:8000/profile/"+this.state.username, config).then(
                 (response) => {
                     if(response['status'] === 200) {
-                        var data = JSON.stringify(response['data'])
+                        var data = response['data']
                         this.setState({
                             userId: data['userid'],
                             isusernameDialogOpen: false,
@@ -256,9 +257,9 @@ class Home extends Component {
             Axios.post("http://localhost:8000/actionscript", formData, config).then(
                 (response) => {
                     if(response['status'] === 200) {
-                        var data = JSON.stringify(response['data'])
-                        this.setState({ 
-                            isLoading: false, scriptId: data['script_id'], 
+                        var data = response['data']
+                        this.setState({
+                            isLoading: false, scriptId: data['script_id'],
                             isValidateDialogOpen: false,
                             isSelectionDialogOpen: false
                         })
@@ -271,8 +272,32 @@ class Home extends Component {
 
     matchPlayer() {
         this.setState({ isLoading: true, isMatchingDialogOpen: true }, () => {
-            
+            Axios.post("http://localhost:8000/match", {
+                'player_id': this.state.userId,
+                'action_script_id': this.state.scriptId
+            }).then(
+                (response) => {
+                    if(response['status'] === 200) {
+                        var data = response['data']
+                        console.log(data)
+                        // if(data['match_is_complete']) { this.playerMatched() }
+                        // else {
+                            const timer = new TaskTimer(1000);
+                            timer.on('listen_match', () => { console.log('Listening...') })
+                            timer.start();
+                        // }
+                    }
+                }
+            );
         })
+    }
+
+    playerMatched() {
+        
+    }
+
+    listenForMatch(reqId) {
+        console.log('Listening...')
     }
 
 	render() {
