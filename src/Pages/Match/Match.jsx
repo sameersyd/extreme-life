@@ -9,7 +9,8 @@ class Match extends Component {
         super(props)
         this.state = {
             isLoading: false,
-            data: {}
+            data: {},
+            msgTF: ''
         }
     }
 
@@ -19,6 +20,18 @@ class Match extends Component {
     //         this.setState({ data: data })
     //     } else { window.location = '/'; }
     // }
+
+    matchView() {
+        return(
+            <div className="match-trailing-message">
+                <div className="match-message-divider"/>
+                <div className="match-trailing-message-container">
+                    <input type="text" className="match-trailing-message-input" placeholder="Type your message here..." value={this.state.msgTF} onChange={event => this.setState({ msgTF: event.target.value })} />
+                    <h1 className="match-trailing-message-sendBtn">Send</h1>
+                </div>
+            </div>
+        )
+    }
 
     render() {
         return(
@@ -37,9 +50,7 @@ class Match extends Component {
                     <div className="match-divider"/>
                     <div className="match-trailing-container">
                         <h1 className="match-trailing-turn">Your Turn</h1>
-                        <div className="match-trailing-message">
-                            <h1 className="">Message</h1>
-                        </div>
+                        { this.matchView() }
                     </div>
                 </div>
             </div>
