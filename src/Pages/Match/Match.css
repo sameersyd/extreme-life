@@ -87,10 +87,12 @@
 
 .match-trailing-message {
     width: 280px;
+    height: 375px;
     margin-top: auto;
-    align-self: center;
-    justify-content: center;
     background-color: #ffffff40;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
 }
 
 .match-trailing-turn {
@@ -102,12 +104,12 @@
 }
 
 .match-trailing-message-container {
-    height: 375px;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: flex-end;
-    margin: 0px 8px 0px 8px;
+    align-items: center;
+    margin-left: 8px;
+    margin-right: 8px;
 }
 
 .match-trailing-message-sendBtn {
@@ -115,6 +117,10 @@
     font-size: 14px;
     color: white;
     opacity: 100%;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    margin-top: 2px;
 }
 
 .match-trailing-message-input {

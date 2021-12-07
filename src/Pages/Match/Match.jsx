@@ -21,13 +21,17 @@ class Match extends Component {
     //     } else { window.location = '/'; }
     // }
 
+    sendMessage() {
+        this.setState({ msgTF: '' })
+    }
+
     matchView() {
         return(
             <div className="match-trailing-message">
                 <div className="match-message-divider"/>
                 <div className="match-trailing-message-container">
                     <input type="text" className="match-trailing-message-input" placeholder="Type your message here..." value={this.state.msgTF} onChange={event => this.setState({ msgTF: event.target.value })} />
-                    <h1 className="match-trailing-message-sendBtn">Send</h1>
+                    <button className="match-trailing-message-sendBtn" onClick={(e) => { this.sendMessage() }}>Send</button>
                 </div>
             </div>
         )
