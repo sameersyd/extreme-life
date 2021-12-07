@@ -8,9 +8,17 @@ class Match extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            isLoading: false
+            isLoading: false,
+            data: {}
         }
     }
+
+    // componentWillMount() {
+    //     if(this.props.location.state !== undefined) {
+    //         const data = this.props.location.state.data;
+    //         this.setState({ data: data })
+    //     } else { window.location = '/'; }
+    // }
 
     render() {
         return(

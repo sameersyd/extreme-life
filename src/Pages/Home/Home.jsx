@@ -64,7 +64,7 @@ class Home extends Component {
                     if(response['status'] === 200) {
                         var data = response['data']
                         this.setState({
-                            userId: data['userid'],
+                            userId: data['user_id'],
                             isusernameDialogOpen: false,
                             isSelectionDialogOpen: true
                         })
@@ -151,8 +151,9 @@ class Home extends Component {
                                     scriptId: aObj.script_id, 
                                     isScriptsDialogOpen: false,
                                     isSelectionDialogOpen: false
+                                }, () => {
+                                    this.matchPlayer()
                                 })
-                                this.matchPlayer()
                             }}>{script_name}</h1>
                         )
                     })}
@@ -272,13 +273,14 @@ class Home extends Component {
     matchPlayer() {
         this.setState({ isLoading: true, isMatchingDialogOpen: true }, () => {
             Axios.post("http://localhost:8000/match", {
-                'player_id': this.state.userId,
+                'headers': { 'Access-Control-Allow-Origin': '*' },
+                'user_id': this.state.userId,
                 'action_script_id': this.state.scriptId
             }).then(
                 (response) => {
                     if(response['status'] === 200) {
                         var data = response['data']
-                        if(data['match_is_complete']) { this.playerMatched() }
+                        if(data['match_is_complete']) { this.playerMatched(data) }
                         else { this.listenForMatch(data['request_id']) }
                     }
                 }
@@ -286,12 +288,16 @@ class Home extends Component {
         })
     }
 
-    playerMatched() {
+    playerMatched(data) {
         this.setState({
             isLoading: false,
             isMatchingDialogOpen: false
         }, () => {
-            window.location = '/match'
+            var slotsPage = {
+                pathname: '/match',
+                state: { data: data }
+            }
+            this.props.history.push(slotsPage);
         })
     }
 
@@ -300,7 +306,7 @@ class Home extends Component {
             (response) => {
                 if(response['status'] === 200) {
                     var data = response['data']
-                    if(data['match_is_complete']) { this.playerMatched() }
+                    if(data['match_is_complete']) { this.playerMatched(data) }
                     else { setTimeout(() => { this.listenForMatch(reqId) }, 3000) }
                 }
             }
