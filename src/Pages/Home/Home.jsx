@@ -273,14 +273,13 @@ class Home extends Component {
     matchPlayer() {
         this.setState({ isLoading: true, isMatchingDialogOpen: true }, () => {
             Axios.post("http://localhost:8000/match", {
-                'headers': { 'Access-Control-Allow-Origin': '*' },
                 'user_id': this.state.userId,
                 'action_script_id': this.state.scriptId
             }).then(
                 (response) => {
                     if(response['status'] === 200) {
                         var data = response['data']
-                        if(data['match_is_complete']) { this.playerMatched(data) }
+                        if(data['is_match_complete']) { this.playerMatched(data) }
                         else { this.listenForMatch(data['request_id']) }
                     }
                 }
@@ -306,7 +305,7 @@ class Home extends Component {
             (response) => {
                 if(response['status'] === 200) {
                     var data = response['data']
-                    if(data['match_is_complete']) { this.playerMatched(data) }
+                    if(data['is_match_complete']) { this.playerMatched(data) }
                     else { setTimeout(() => { this.listenForMatch(reqId) }, 3000) }
                 }
             }
