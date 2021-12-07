@@ -15,8 +15,8 @@ class Match extends Component {
     render() {
         return(
             <div className={this.state.isLoading ? "match-disableInteraction" : ""}>
-                <div>
-                    <div className="match-container">
+                <div className="match-container">
+                    <div className="match-leading-container">
                         <div className="match-header">
                             <div className="match-logoImage"/>
                             <div className="match-username-container">
@@ -24,6 +24,13 @@ class Match extends Component {
                                 <h1 className="match-VS">VS</h1>
                                 <h1 className="match-username">cool_user</h1>
                             </div>
+                        </div>
+                    </div>
+                    <div className="match-divider"/>
+                    <div className="match-trailing-container">
+                        <h1 className="match-trailing-turn">Your Turn</h1>
+                        <div className="match-trailing-message">
+                            <h1 className="">Message</h1>
                         </div>
                     </div>
                 </div>

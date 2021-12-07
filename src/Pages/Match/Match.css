@@ -22,6 +22,12 @@
 }
 
 .match-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.match-leading-container {
+    flex-grow: 100;
 	margin: 10px 50px 50px 50px;
 }
 
@@ -61,4 +67,31 @@
     margin-left: 30px;
     margin-right: 30px;
     align-self: flex-end;
+}
+
+.match-divider {
+    width: 4px;
+    height: 98vh;
+    background-color: white;
+    opacity: 80%;
+}
+
+.match-trailing-container {
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.match-trailing-message {
+    margin-top: auto;
+    align-self: center;
+}
+
+.match-trailing-turn {
+    font-family: Circe-Bold;
+    font-size: 30px;
+    color: white;
+    align-self: center;
+    margin-top: 100px;
 }

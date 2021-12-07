@@ -278,11 +278,8 @@ class Home extends Component {
                 (response) => {
                     if(response['status'] === 200) {
                         var data = response['data']
-                        console.log(data)
                         if(data['match_is_complete']) { this.playerMatched() }
-                        else {
-                            // listen for Match
-                        }
+                        else { this.listenForMatch(data['request_id']) }
                     }
                 }
             );
@@ -290,11 +287,24 @@ class Home extends Component {
     }
 
     playerMatched() {
-        
+        this.setState({
+            isLoading: false,
+            isMatchingDialogOpen: false
+        }, () => {
+            window.location = '/match'
+        })
     }
 
     listenForMatch(reqId) {
-        console.log('Listening...')
+        Axios.get("http://localhost:8000/match/" + reqId).then(
+            (response) => {
+                if(response['status'] === 200) {
+                    var data = response['data']
+                    if(data['match_is_complete']) { this.playerMatched() }
+                    else { setTimeout(() => { this.listenForMatch(reqId) }, 3000) }
+                }
+            }
+        );
     }
 
 	render() {
