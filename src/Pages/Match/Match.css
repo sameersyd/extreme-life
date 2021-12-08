@@ -11,6 +11,8 @@
 	font-family: Circe-ExtraBold;
 }
 
+body { margin: 0 }
+
 .match-disableInteraction {
     pointer-events: none;
 }
@@ -71,7 +73,7 @@
 
 .match-divider {
     width: 4px;
-    height: 98vh;
+    height: 100vh;
     background-color: white;
     opacity: 80%;
 }
