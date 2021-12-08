@@ -9,9 +9,9 @@ import Game from '../src/Pages/Game/Game.jsx';
 ReactDOM.render(
     <Router>
         <Routes>
-            <Route exact path="/" element={<App />}> /></Route>
-            <Route exact path="/match" element={<Match />}> /></Route>
-            <Route exact path="/game" element={<Game />}> /></Route>
+            <Route exact path="/" element={<App />}></Route>
+            <Route exact path="/match/:id1/:id2" element={<Match />}></Route>
+            <Route exact path="/game" element={<Game />}></Route>
         </Routes>
     </Router>
     , document.getElementById("root")

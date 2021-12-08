@@ -279,7 +279,7 @@ class Home extends Component {
                 (response) => {
                     if(response['status'] === 200) {
                         var data = response['data']
-                        if(data['is_match_complete']) { this.playerMatched(data) }
+                        if(data['is_match_complete']) { this.playerMatched(data['game_id']) }
                         else { this.listenForMatch(data['request_id']) }
                     }
                 }
@@ -287,16 +287,12 @@ class Home extends Component {
         })
     }
 
-    playerMatched(data) {
+    playerMatched(game_id) {
         this.setState({
             isLoading: false,
             isMatchingDialogOpen: false
         }, () => {
-            var slotsPage = {
-                pathname: '/match',
-                state: { data: data }
-            }
-            this.props.history.push(slotsPage);
+            window.location = '/match/' + this.state.userId + '/' + game_id
         })
     }
 
@@ -305,7 +301,7 @@ class Home extends Component {
             (response) => {
                 if(response['status'] === 200) {
                     var data = response['data']
-                    if(data['is_match_complete']) { this.playerMatched(data) }
+                    if(data['is_match_complete']) { this.playerMatched(data['game_id']) }
                     else { setTimeout(() => { this.listenForMatch(reqId) }, 3000) }
                 }
             }
