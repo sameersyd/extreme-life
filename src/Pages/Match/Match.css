@@ -1,0 +1,146 @@
+@font-face {
+	src: url(../../Resources/fonts/Circe-Regular.ttf);
+	font-family: Circe-Regular;
+}
+@font-face {
+	src: url(../../Resources/fonts/Circe-Bold.ttf);
+	font-family: Circe-Bold;
+}
+@font-face {
+	src: url(../../Resources/fonts/Circe-ExtraBold.ttf);
+	font-family: Circe-ExtraBold;
+}
+
+body { margin: 0 }
+
+.match-disableInteraction {
+    pointer-events: none;
+}
+
+.match-bgBlur {
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    pointer-events: none;
+}
+
+.match-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.match-leading-container {
+    flex-grow: 100;
+	margin: 10px 50px 50px 50px;
+}
+
+.match-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.match-logoImage {
+	width: 337.15px;
+	height: 40px;
+	background-image: url(../../Resources/Images/logo_text.png);
+	background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.match-username-container {
+	display: flex;
+    flex-direction: row;
+    margin: auto;
+}
+
+.match-username {
+	font-family: Circe-Bold;
+    font-size: 30px;
+    color: white;
+    align-self: flex-end;
+    margin-bottom: 30px;
+}
+
+.match-VS {
+    font-family: Circe-ExtraBold;
+    font-size: 40px;
+    color: white;
+    margin-left: 30px;
+    margin-right: 30px;
+    align-self: flex-end;
+}
+
+.match-divider {
+    width: 4px;
+    height: 100vh;
+    background-color: white;
+    opacity: 80%;
+}
+
+.match-trailing-container {
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Message */
+
+.match-trailing-message {
+    width: 280px;
+    height: 375px;
+    margin-top: auto;
+    background-color: #ffffff40;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.match-trailing-turn {
+    font-family: Circe-Bold;
+    font-size: 30px;
+    color: white;
+    align-self: center;
+    margin-top: 100px;
+}
+
+.match-trailing-message-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.match-trailing-message-sendBtn {
+    font-family: Circe-Bold;
+    font-size: 14px;
+    color: white;
+    opacity: 100%;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    margin-top: 2px;
+}
+
+.match-trailing-message-input {
+	height: 40px;
+    color: white;
+    width: 300px;
+    padding-left: 2px;
+    border: 0px;
+    display: flex;
+    outline-width: 0;
+    font-family: Circe-Regular;
+	font-size: 14px;
+	background: #00000000;
+}
+
+.match-message-divider {
+    width: 280px;
+    height: 1px;
+    background-color: white;
+    opacity: 80%;
+}

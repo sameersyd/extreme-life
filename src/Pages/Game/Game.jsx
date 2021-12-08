@@ -262,5 +262,3 @@ class GameManager {
 
 var gm = new GameManager();  // GameManager
 export default Game;
-
-
