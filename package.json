@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babylonjs/gui": "^4.2.0",
+    "@babylonjs/materials": "^4.2.0",
     "@testing-library/jest-dom": "latest",
     "@testing-library/react": "latest",
     "@testing-library/user-event": "latest",
