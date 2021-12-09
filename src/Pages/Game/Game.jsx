@@ -195,6 +195,7 @@ const Game = () => (
 
 const sendSelectedCells = () => {
     // serialize data.
+    
     // api call with data
 }
 
@@ -226,7 +227,7 @@ class GameManager {
                 gm.cells[x][z].material.specularColor = new BABYLON.Color4(1,1,1);
                 gm.cells[x][z].position.z = offset + z;
                 gm.cells[x][z].position.x = offset + x;
-                gm.cells[x][z].position.y = 0.5;
+                gm.cells[x][z].position.y = cellWidth / 2;
                 gm.cells[x][z].isPickable = true;
             }
         }
