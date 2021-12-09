@@ -113,8 +113,7 @@ const createPickedCellDisplay = () => {
     tTag.style.width = "96%";
     tTag.style.fontSize = "1.0em";
     tTag.style.color = "white";
-    buttonbox.appendChild(tTag);
-
+    // buttonbox.appendChild(tTag);
 
     var header = document.createElement('div');
     header.id = "header";
@@ -126,7 +125,7 @@ const createPickedCellDisplay = () => {
     header.style.width = "96%";
     header.style.fontSize = "1.0em";
     header.style.color = "black";
-    buttonbox.appendChild(header);
+    // buttonbox.appendChild(header);
     return header;
 }
 
@@ -189,7 +188,7 @@ const Game = () => (
         <script type="text/javascript">
             {gm.setGridWidth(GRIDWIDTH)}
         </script>
-        <SceneComponent antialias onSceneReady={onSceneReady} onRender={onRender} id="my-canvas" style={{width: '100%'}}/>
+        <SceneComponent antialias onSceneReady={onSceneReady} onRender={onRender} id="my-canvas" style={{width: '100%', height: '100%'}}/>
   </div>
 );
 

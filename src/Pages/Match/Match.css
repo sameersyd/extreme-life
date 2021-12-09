@@ -30,7 +30,7 @@ body { margin: 0 }
 
 .match-leading-container {
     flex-grow: 100;
-	margin: 10px 50px 50px 50px;
+	margin: 10px 0px 0px 50px;
 }
 
 .match-header {

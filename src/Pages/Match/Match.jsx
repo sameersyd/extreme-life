@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Match.css';
 import { Spring, animated } from 'react-spring'
 import Axios from 'axios';
+import Game from '../Game/Game.jsx';
 
 class Match extends Component {
 
@@ -52,7 +53,7 @@ class Match extends Component {
         this.setState({ msgTF: '' })
     }
 
-    matchView() {
+    messageView() {
         return(
             <div className="match-trailing-message">
                 <div className="match-message-divider"/>
@@ -77,11 +78,12 @@ class Match extends Component {
                                 <h1 className="match-username">{this.state.otherUser['username']}</h1>
                             </div>
                         </div>
+                        <Game />
                     </div>
                     <div className="match-divider"/>
                     <div className="match-trailing-container">
                         <h1 className="match-trailing-turn">Your Turn</h1>
-                        { this.matchView() }
+                        { this.messageView() }
                     </div>
                 </div>
             </div>
