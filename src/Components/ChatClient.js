@@ -17,8 +17,7 @@ chatClient.pubnub.addListener({
 
 class ChatClient {
     // considering getting keys from with in component.
-    constructor(username, uuid, sessionid, msgcallback, apiurl='http://localhost:8000') {
-        this.apiurl = apiurl;
+    constructor(username, uuid, sessionid, msgcallback, apiurl = 'http://localhost:8000') {
         this.username = username;
         this.uuid = uuid;
         this.sessionid = sessionid;
@@ -27,7 +26,7 @@ class ChatClient {
         this.callback = msgcallback;
         this.pubnub = this.connect(keys.pub, keys.sub);
     }
-    
+
     connect(pubKey, subKey) {
         var pubnub = new PubNub({
             publishKey: pubKey,
@@ -43,12 +42,11 @@ class ChatClient {
         return pubnub;
     }
 
-    get_channel() {
+    get_channel(apiurl) {
         // get channel name from chat API.
         let http = new XMLHttpRequest();
         var params = 'sessionid=' + this.sessionid;
-        console.log('params in getchannel: ' + params);
-        http.open("GET", this.apiurl + '/getchannel?' + params, false);
+        http.open("GET", apiurl + '/getchannel?' + params, false);
         http.send();
         http.onload = () => {
             if (http.status === 200) {
@@ -57,17 +55,14 @@ class ChatClient {
                 console.log(`error ${http.status} ${http.statusText}`);
             }
         }
-        var res = http.responseText;
-        console.log('res: ' + res);
         return JSON.parse(http.responseText);
     }
 
-    get_keys() {
+    get_keys(apiurl) {
         // get keys from API.
         let http = new XMLHttpRequest();
         var params = 'channelname=' + this.channel;
-        console.log('params in getkeys: ' + params);
-        http.open("GET", this.apiurl + '/getkeys?' + params, false);
+        http.open("GET", apiurl + '/getkeys?' + params, false);
         http.send();
         http.onload = () => {
             if (http.status === 200) {
@@ -84,9 +79,13 @@ class ChatClient {
         // send the message.
 
         this.pubnub.publish({
-                channel: this.channel,
-                message: { 'entry': this.username, 'update': message.message }
-            },
+            channel: this.channel,
+            message: {
+                'entry': this.username,
+                'update': message.message,
+                'uuid': message.id
+            }
+        },
             // callback function which checks status and processing post-send.
             function (status, response) {
                 if (status.error) {
@@ -104,14 +103,12 @@ class ChatClient {
     }
 
     sendMessage(message) {
-        let id = null;
-        this.submitUpdate(new Message(id, this.username, message));
+        this.submitUpdate(new Message(this.uuid, this.username, message));
     }
 
     listenMessages(event) {
-        var id = null;
         this.callback(new Message(
-            id,
+            event.message.uuid,
             event.message.entry,
             event.message.update,
             event.timetoken
@@ -119,19 +116,16 @@ class ChatClient {
     }
 
     listenStatus(event) {
-        let id = null;
-        this.callback(new Message(id, this.username, `subscribed to "${this.pubnub.getSubscribedChannels()}"`));
+        this.callback(new Message(this.uuid, this.username, `subscribed to "${this.pubnub.getSubscribedChannels()}"`));
         // player has joined the chat.
         if (event.category === 'PNConnectedCategory') {
-            this.submitUpdate(new Message(id, this.username, 'has joined.'));
+            this.submitUpdate(new Message(this.uuid, this.username, 'has joined.'));
         }
-    }    
+    }
 }
 
-// let message_counter = 
-// find out what id is for.
 class Message {
-    constructor(id, sender_id, message, timetoken=Date.now()) {
+    constructor(id, sender_id, message, timetoken = Date.now()) {
         console.log(`id:${id}, sender_id:${sender_id}, message:${message}, timetoken:${timetoken}`);
         this.id = id;
         this.sender_id = sender_id;
@@ -140,4 +134,4 @@ class Message {
     };
 }
 
-export {ChatClient, Message};
+export { ChatClient, Message };
