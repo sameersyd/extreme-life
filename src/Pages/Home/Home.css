@@ -544,3 +544,12 @@ body {
     opacity: 1;
     transition: 0s
 }
+
+/* Matching Dialog */
+
+.home-matchDialog-header {
+	font-size: 16px;
+	font-family: Circe-Bold;
+    color: #FFFFFF;
+	margin-top: -2px;
+}

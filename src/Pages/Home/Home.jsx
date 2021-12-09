@@ -13,10 +13,12 @@ class Home extends Component {
             isusernameDialogOpen: false,
             isSelectionDialogOpen: false,
             isValidateDialogOpen: false,
+            isMatchingDialogOpen: false,
             username: "",
             userId: 0,
             actionScripts: [],
             scriptName: "",
+            scriptId: 0,
             script: ""
         }
         this.fetchActions()
@@ -30,15 +32,15 @@ class Home extends Component {
             (response) => {
                 if(response['status'] === 200) {
                     let data = [
-                        { "script_name": "Side shifter" }, { "script_name": "Attack 1" },
-                        { "script_name": "Attack 2" }, { "script_name": "Attack 3" },
-                        { "script_name": "Round Attack" }, { "script_name": "Trigger shift" },
-                        { "script_name": "Slider attack 1" }, { "script_name": "Slider attack 2" },
-                        { "script_name": "Cell Box" }, { "script_name": "Timed Boxer" },
-                        { "script_name": "Flex Attack 1" }, { "script_name": "Flex Attack 2" },
-                        { "script_name": "Flex Attack 3" }, { "script_name": "Random Shift" }
+                        { "script_name": "Side shifter", "script_id": 425345 },
+                        { "script_name": "Attack 2", "script_id": 987439 },
+                        { "script_name": "Round Attack", "script_id": 209257 },
+                        { "script_name": "Slider attack 1", "script_id": 874365 },
+                        { "script_name": "Cell Box", "script_id": 983465 },
+                        { "script_name": "Flex Attack 1", "script_id": 982374},
+                        { "script_name": "Flex Attack 3", "script_id": 297434 },
                     ]
-                    // var data = JSON.stringify(response['data'])
+                    // var data = response['data']
                     this.setState({ actionScripts: data })
                 }
             }
@@ -60,9 +62,9 @@ class Home extends Component {
             Axios.post("http://localhost:8000/profile/"+this.state.username, config).then(
                 (response) => {
                     if(response['status'] === 200) {
-                        var data = JSON.stringify(response['data'])
+                        var data = response['data']
                         this.setState({
-                            userId: data['userid'],
+                            userId: data['user_id'],
                             isusernameDialogOpen: false,
                             isSelectionDialogOpen: true
                         })
@@ -144,11 +146,19 @@ class Home extends Component {
                     {this.state.actionScripts.map((aObj, k) => {
                         const script_name = aObj.script_name
                         return(
-                            <h1 className="home-scriptsDialog-title">{script_name}</h1>
+                            <h1 className="home-scriptsDialog-title" onClick={(e) => { 
+                                this.setState({
+                                    scriptId: aObj.script_id, 
+                                    isScriptsDialogOpen: false,
+                                    isSelectionDialogOpen: false
+                                }, () => {
+                                    this.matchPlayer()
+                                })
+                            }}>{script_name}</h1>
                         )
                     })}
                 </div>
-                <h1 className="home-dialog-cancel" onClick={(e) => { this.setState({isScriptsDialogOpen: false}) }}>Cancel</h1>
+                <h1 className="home-dialog-cancel" onClick={(e) => { this.setState({ isScriptsDialogOpen: false }) }}>Cancel</h1>
             </animated.div>
         )
     }
@@ -160,8 +170,23 @@ class Home extends Component {
                     <input type="text" className="home-usernameDialog-input" placeholder="Script name" value={this.state.scriptName} onChange={event => this.setState({ scriptName: event.target.value })} />
                     <div class="home-usernameDialog-divider"/>
                 </div>
-                <button className="home-validateDialog-uploadBtn" onClick={(e) => { this.selectFile() }}>Upload script</button>
+                <button className="home-validateDialog-uploadBtn" onClick={(e) => { this.uploadScript() }}>Upload script</button>
                 <h1 className="home-dialog-cancel" onClick={(e) => { this.setState({isValidateDialogOpen: false}) }}>Cancel</h1>
+            </animated.div>
+        )
+    }
+
+    uploadScript() {
+        if(this.state.scriptName === "") {
+            alert('Enter script name'); return
+        }
+        this.selectFile()
+    }
+
+    matchingDesign(animation) {
+        return (
+            <animated.div style={animation} className="home-dialog">
+                <h1 className="home-matchDialog-header">Matching User...</h1>
             </animated.div>
         )
     }
@@ -172,7 +197,7 @@ class Home extends Component {
                 <div className="home-howToPlay-layout">
                     <div className="home-howToPlay-header-layout">
                         <h1 className="home-howToPlay-header">How to play</h1>
-                        <div className="home-howToPlay-close" onClick={(e) => { this.setState({isHowToPlayDialogOpen: false}) }}/>
+                        <div className="home-howToPlay-close" onClick={(e) => { this.setState({ isHowToPlayDialogOpen: false }) }}/>
                     </div>
                     <div className="home-howToPlay-content">
                         <h1 className="home-howToPlay-title">How to play</h1>
@@ -201,8 +226,8 @@ class Home extends Component {
     }
 
     shouldBlurBackground() {
-        return this.state.isusernameDialogOpen || this.state.isHowToPlayDialogOpen || 
-        this.state.isSelectionDialogOpen || this.state.isScriptsDialogOpen || this.state.isValidateDialogOpen
+        return this.state.isusernameDialogOpen || this.state.isHowToPlayDialogOpen || this.state.isSelectionDialogOpen || 
+        this.state.isScriptsDialogOpen || this.state.isValidateDialogOpen || this.state.isMatchingDialogOpen
     }
 
     // Upload Script Dialog -> Trigger [ <input type="file" ] when button pressed
@@ -213,13 +238,74 @@ class Home extends Component {
         let file = e.target.files[0]
         if(file != null) {
             this.setState({ script: file }, () => {
-                this.callValidateAPI()
+                this.callValidateAPI(file)
             })
         }
     }
 
-    callValidateAPI() {
-        console.log('Script =', this.state.script)
+    callValidateAPI(file) {
+        this.setState({ isLoading: true }, () => {
+            var formData = new FormData();
+            formData.append("file", file);
+            var config = {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'multipart/form-data'
+                },
+                params: {'script_name': this.state.scriptName}
+            };
+            Axios.post("http://localhost:8000/actionscript", formData, config).then(
+                (response) => {
+                    if(response['status'] === 200) {
+                        var data = response['data']
+                        this.setState({
+                            isLoading: false, scriptId: data['script_id'],
+                            isValidateDialogOpen: false,
+                            isSelectionDialogOpen: false
+                        })
+                        this.matchPlayer()
+                    }
+                }
+            );
+        })
+    }
+
+    matchPlayer() {
+        this.setState({ isLoading: true, isMatchingDialogOpen: true }, () => {
+            Axios.post("http://localhost:8000/match", {
+                'user_id': this.state.userId,
+                'action_script_id': this.state.scriptId
+            }).then(
+                (response) => {
+                    if(response['status'] === 200) {
+                        var data = response['data']
+                        if(data['is_match_complete']) { this.playerMatched(data['game_id']) }
+                        else { this.listenForMatch(data['request_id']) }
+                    }
+                }
+            );
+        })
+    }
+
+    playerMatched(game_id) {
+        this.setState({
+            isLoading: false,
+            isMatchingDialogOpen: false
+        }, () => {
+            window.location = '/match/' + this.state.userId + '/' + game_id
+        })
+    }
+
+    listenForMatch(reqId) {
+        Axios.get("http://localhost:8000/match/" + reqId).then(
+            (response) => {
+                if(response['status'] === 200) {
+                    var data = response['data']
+                    if(data['is_match_complete']) { this.playerMatched(data['game_id']) }
+                    else { setTimeout(() => { this.listenForMatch(reqId) }, 3000) }
+                }
+            }
+        );
     }
 
 	render() {
@@ -276,6 +362,13 @@ class Home extends Component {
                     to={{ transform: this.state.isValidateDialogOpen ? 'translate(-50%, -50%)' : 'translate(-50%, 1000%)' }}
                 >
                     {(animation)=>(this.validateScript(animation))}
+                </Spring>
+                <Spring
+                    native
+                    from= {{ transform: 'translate(-50%, 200%)' }}
+                    to={{ transform: this.state.isMatchingDialogOpen ? 'translate(-50%, -50%)' : 'translate(-50%, 1000%)' }}
+                >
+                    {(animation)=>(this.matchingDesign(animation))}
                 </Spring>
             </div>
         )
