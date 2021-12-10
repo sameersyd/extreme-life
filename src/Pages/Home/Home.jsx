@@ -28,7 +28,7 @@ class Home extends Component {
         var config = {
             headers: {'Access-Control-Allow-Origin': '*'}
         };
-        Axios.get("http://localhost:8000/actionscript/", config).then(
+        Axios.get("https://www.comp680elgame.tk/actionscript/", config).then(
             (response) => {
                 if(response['status'] === 200) {
                     let data = [
@@ -59,7 +59,7 @@ class Home extends Component {
             var config = {
                 headers: {'Access-Control-Allow-Origin': '*'}
             };
-            Axios.post("http://localhost:8000/profile/"+this.state.username, config).then(
+            Axios.post("https://www.comp680elgame.tk/profile/"+this.state.username, config).then(
                 (response) => {
                     if(response['status'] === 200) {
                         var data = response['data']
@@ -254,7 +254,7 @@ class Home extends Component {
                 },
                 params: {'script_name': this.state.scriptName}
             };
-            Axios.post("http://localhost:8000/actionscript", formData, config).then(
+            Axios.post("https://www.comp680elgame.tk/actionscript", formData, config).then(
                 (response) => {
                     if(response['status'] === 200) {
                         var data = response['data']
@@ -272,7 +272,7 @@ class Home extends Component {
 
     matchPlayer() {
         this.setState({ isLoading: true, isMatchingDialogOpen: true }, () => {
-            Axios.post("http://localhost:8000/match", {
+            Axios.post("https://www.comp680elgame.tk/match", {
                 'user_id': this.state.userId,
                 'action_script_id': this.state.scriptId
             }).then(
@@ -297,7 +297,7 @@ class Home extends Component {
     }
 
     listenForMatch(reqId) {
-        Axios.get("http://localhost:8000/match/" + reqId).then(
+        Axios.get("https://www.comp680elgame.tk/match/" + reqId).then(
             (response) => {
                 if(response['status'] === 200) {
                     var data = response['data']

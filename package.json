@@ -12,6 +12,7 @@
     "babylonjs": "^4.2.0",
     "babylonjs-gui": "^4.2.0",
     "babylonjs-hook": "^0.1.0",
+    "pubnub": "^4.35.0",
     "react": "latest",
     "react-babylonjs": "^3.0.30",
     "react-dom": "latest",

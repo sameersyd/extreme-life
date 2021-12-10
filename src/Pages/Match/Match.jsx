@@ -3,6 +3,7 @@ import './Match.css';
 import { Spring, animated } from 'react-spring'
 import Axios from 'axios';
 import Game from '../Game/Game.jsx';
+import { ChatClient } from '../../Components/ChatClient'
 
 class Match extends Component {
 
@@ -10,11 +11,15 @@ class Match extends Component {
         super(props)
         this.state = {
             isLoading: false,
+            game_id: 0,
             currUser: {},
             otherUser: {},
-            msgTF: ''
+            msgTF: '',
+            msgObj: 0,
+            messages: []
         }
         this.setupData()
+        this.msgcallback = this.msgcallback.bind(this)
     }
 
     setupData() {
@@ -29,7 +34,7 @@ class Match extends Component {
     }
 
     fetchData(user_id, game_id) {
-        Axios.get("http://localhost:8000/game/" + game_id).then(
+        Axios.get("https://www.comp680elgame.tk/game/" + game_id).then(
             (response) => {
                 if(response['status'] === 200) {
                     const data = response['data']
@@ -37,28 +42,63 @@ class Match extends Component {
                     const player2 = data['player2_req']
                     const isCurrPlayer1 = player1['user_id'] === parseInt(user_id)
                     this.setState({
+                        game_id: parseInt(game_id),
                         currUser: isCurrPlayer1 ? player1 : player2,
                         otherUser: isCurrPlayer1 ? player2 : player1
+                    }, () => {
+                        this.setupChat()
                     })
-                    console.log(player1)
                 }
             }
         ).catch(function(error) {
+            console.log(error)
             alert('Unable to load game')
             window.location = '/'
         });
     }
 
     sendMessage() {
+        const msgObj = this.state.msgObj
+        msgObj.sendMessage(this.state.msgTF)
         this.setState({ msgTF: '' })
+    }
+
+    setupChat() {
+        const msgObj = new ChatClient(
+            this.state.currUser['username'],
+            this.state.currUser['user_id'],
+            this.state.game_id,
+            this.msgcallback
+        )
+        this.setState({ msgObj: msgObj })
+    }
+
+    msgcallback(message) {
+        var msgs = this.state.messages
+        msgs.push(message)
+        this.setState({ messages: msgs })
+    }
+
+    // Call method when keys pressed, and check if it's 'Enter' key
+    sendKeyPressed(event) {
+        var code = event.keyCode || event.which;
+        if(code === 13) { this.sendMessage() }
     }
 
     messageView() {
         return(
             <div className="match-trailing-message">
+                <div className="match-messages-list">
+                    {this.state.messages.map((msgObj, k) => {
+                        const isSent = msgObj.id === this.state.currUser["user_id"]
+                        return(
+                            <h1 className={isSent ? 'match-message-msgs-sent-title' : 'match-message-msgs-received-title'}>{msgObj.message}</h1>
+                        )
+                    })}
+                </div>
                 <div className="match-message-divider"/>
                 <div className="match-trailing-message-container">
-                    <input type="text" className="match-trailing-message-input" placeholder="Type your message here..." value={this.state.msgTF} onChange={event => this.setState({ msgTF: event.target.value })} />
+                    <input type="text" className="match-trailing-message-input" onKeyPress={this.sendKeyPressed.bind(this)} placeholder="Type your message here..." value={this.state.msgTF} onChange={event => this.setState({ msgTF: event.target.value })} />
                     <button className="match-trailing-message-sendBtn" onClick={(e) => { this.sendMessage() }}>Send</button>
                 </div>
             </div>

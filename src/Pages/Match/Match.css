@@ -89,7 +89,6 @@ body { margin: 0 }
 
 .match-trailing-message {
     width: 280px;
-    height: 375px;
     margin-top: auto;
     background-color: #ffffff40;
     display: flex;
@@ -143,4 +142,29 @@ body { margin: 0 }
     height: 1px;
     background-color: white;
     opacity: 80%;
+}
+
+.match-messages-list {
+    max-height: 375px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll
+}
+
+/* Message Cell */
+
+.match-message-msgs-sent-title, .match-message-msgs-received-title {
+    font-family: Circe-Regular;
+	font-size: 13px;
+    color: #ffffff;
+}
+
+.match-message-msgs-sent-title {
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+.match-message-msgs-received-title {
+    margin-right: auto;
+    margin-left: 10px;
 }
