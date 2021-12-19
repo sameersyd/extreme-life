@@ -7,6 +7,7 @@ class Home extends Component {
 
     constructor(props) {
         super(props)
+        this.apiurl = "https://www.comp680elgame.tk"
         this.state = {
             isLoading: false,
             isHowToPlayDialogOpen: false,
@@ -28,7 +29,7 @@ class Home extends Component {
         var config = {
             headers: {'Access-Control-Allow-Origin': '*'}
         };
-        Axios.get("https://www.comp680elgame.tk/actionscript/", config).then(
+        Axios.get(this.apiurl + "/actionscript/", config).then(
             (response) => {
                 if(response['status'] === 200) {
                     let data = [
@@ -59,7 +60,7 @@ class Home extends Component {
             var config = {
                 headers: {'Access-Control-Allow-Origin': '*'}
             };
-            Axios.post("https://www.comp680elgame.tk/profile/"+this.state.username, config).then(
+            Axios.post(this.apiurl + "/profile/"+this.state.username, config).then(
                 (response) => {
                     if(response['status'] === 200) {
                         var data = response['data']
@@ -146,9 +147,9 @@ class Home extends Component {
                     {this.state.actionScripts.map((aObj, k) => {
                         const script_name = aObj.script_name
                         return(
-                            <h1 className="home-scriptsDialog-title" onClick={(e) => { 
+                            <h1 className="home-scriptsDialog-title" onClick={(e) => {
                                 this.setState({
-                                    scriptId: aObj.script_id, 
+                                    scriptId: aObj.script_id,
                                     isScriptsDialogOpen: false,
                                     isSelectionDialogOpen: false
                                 }, () => {
@@ -226,7 +227,7 @@ class Home extends Component {
     }
 
     shouldBlurBackground() {
-        return this.state.isusernameDialogOpen || this.state.isHowToPlayDialogOpen || this.state.isSelectionDialogOpen || 
+        return this.state.isusernameDialogOpen || this.state.isHowToPlayDialogOpen || this.state.isSelectionDialogOpen ||
         this.state.isScriptsDialogOpen || this.state.isValidateDialogOpen || this.state.isMatchingDialogOpen
     }
 
@@ -254,7 +255,7 @@ class Home extends Component {
                 },
                 params: {'script_name': this.state.scriptName}
             };
-            Axios.post("https://www.comp680elgame.tk/actionscript", formData, config).then(
+            Axios.post(this.apiurl + "/actionscript", formData, config).then(
                 (response) => {
                     if(response['status'] === 200) {
                         var data = response['data']
@@ -272,7 +273,7 @@ class Home extends Component {
 
     matchPlayer() {
         this.setState({ isLoading: true, isMatchingDialogOpen: true }, () => {
-            Axios.post("https://www.comp680elgame.tk/match", {
+            Axios.post(this.apiurl + "/match", {
                 'user_id': this.state.userId,
                 'action_script_id': this.state.scriptId
             }).then(
@@ -297,7 +298,7 @@ class Home extends Component {
     }
 
     listenForMatch(reqId) {
-        Axios.get("https://www.comp680elgame.tk/match/" + reqId).then(
+        Axios.get(this.apiurl + "/match/" + reqId).then(
             (response) => {
                 if(response['status'] === 200) {
                     var data = response['data']

@@ -34,7 +34,7 @@ class Match extends Component {
     }
 
     fetchData(user_id, game_id) {
-        Axios.get("https://www.comp680elgame.tk/game/" + game_id).then(
+        Axios.get(this.apiurl + "/game/" + game_id).then(
             (response) => {
                 if(response['status'] === 200) {
                     const data = response['data']
