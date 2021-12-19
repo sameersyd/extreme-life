@@ -5,6 +5,7 @@ class Cell {
         this._diffuseColor = null;
         this._ambientColor = null;
         this._emissiveColor = null;
+        this.type = null;
     }
 
     get diffuseColor() {
@@ -52,6 +53,14 @@ class Cell {
     set isPickable(pickable) {
         this.mesh.isPickable = pickable;
     }
+
+    // set position(pos) {
+    //     this.position = pos;
+    // }
+
+    // get position() {
+    //     return this.position;
+    // }
 }
 
 export default Cell;
