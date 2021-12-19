@@ -7,6 +7,7 @@ import * as GUI from '@babylonjs/gui';
 import { GridMaterial } from "@babylonjs/materials/grid";
 import Cell from './Cell.jsx';
 let pendingSubmit = false;
+let pendingPut = false;
 let offset = 0;
 
 const API_URL = "https://www.comp680elgame.tk/";
@@ -52,7 +53,13 @@ const onSceneReady = (scene) => {
     //When click event is raised
     let header = createPickedCellDisplay();
     onPointerPick(scene, header);
+
+    // let topY = '-39%';
+    // let leftX = '39%';
+    // let butHeight = '5%';
     
+    setUpdateButton(gm.gui);
+
     setupActionMenu(gm);
 
     gm.getGameConfig(game_id);
@@ -171,6 +178,7 @@ const setSubmitButton = (gui) => {
     gui.addButton(button);
 }
 
+
 const setBoosterButton = (gui) => {
     let button = GUI.Button.CreateSimpleButton("booster", "Activate Booster");
     button.textBlock.fontSize = "25%";
@@ -185,6 +193,23 @@ const setBoosterButton = (gui) => {
         gm.turnsLeft += gm.boosters.turnbooster;
         button.isEnabled = false;
         button.background = 'gray';
+    });
+    gui.addButton(button);
+}
+
+
+const setUpdateButton = (gui) => {
+    let button = GUI.Button.CreateSimpleButton("update", "Update");
+    button.textBlock.fontSize = "25%";
+    button.width = "20%"
+    button.height = "5%";
+    button.color = "white";
+    button.left = "-39%";
+    button.top = "-39%";
+    button.cornerRadius = 10;
+    button.background = "green";
+    button.onPointerUpObservable.add(function () {
+        getNextState(gm.game_id);
     });
     gui.addButton(button);
 }
@@ -410,7 +435,7 @@ const updatePickedCell = cellID => {
 
 const onRender = () => {
     if (gm.cells !== null && gm.cells !== undefined) {
-
+        // getNextState(gm.game_id);
         gm.setState();
         gm.simglow();
     }
@@ -425,14 +450,9 @@ const onRender = () => {
 };
 
 
-async function getNextState(game_id, current_step_id) {
+async function getNextState(game_id) {
     // put-get requests
-    // only get when new step id is equal to the new one.
-    let step_id = await gm.putState(game_id);
-    if (step_id !== current_step_id) {
-        await gm.getState(game_id);
-    }
-    return step_id;
+    gm.putState(game_id);
 }
 
 
@@ -560,12 +580,16 @@ class GameManager {
     }
 
     async putState(game_id) {
+        console.log(`team_number: ${this.team_number}`)
+        if (this.team_number !== 1) {
+            this.getState(this.game_id);
+            return
+        }
+        
         Axios.put(API_URL + "game/" + game_id).then(res => {
-            return res.data;
-
+            this.getState(this.game_id);
         }).catch(err => {
             console.error(`put err: ${err}`);
-            return null;
         })
     }
 
@@ -591,7 +615,9 @@ class GameManager {
         this.score_card = res.data.score_card;
         console.log(`this.team_number: ${this.team_number}`);
         if (this.team_number === null) {
-            this.team_number = (res.data.p1_user_id === gm.user_id) ? 1 : -1;
+            console.log(`res.data.p1_user_id: ${res.data.p1_user_id}, gm.user_id: ${gm.user_id}`);
+            console.log(`res.data.p1_user_id === gm.user_id ${res.data.p1_user_id === parseInt(gm.user_id)}`);
+            this.team_number = (res.data.p1_user_id === parseInt(gm.user_id)) ? 1 : -1;
             gm.camera.position = new BABYLON.Vector3(0, 5, -10 * this.team_number);
             gm.camera.setTarget(BABYLON.Vector3.Zero());
 

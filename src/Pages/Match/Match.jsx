@@ -16,7 +16,7 @@ class Match extends Component {
             currUser: {},
             otherUser: {},
             msgTF: '',
-            msgObj: 0,
+            msgObj: null,
             messages: []
         }
         this.setupData()
@@ -31,23 +31,24 @@ class Match extends Component {
             alert(`Unable to load game: game_id ${game_id}, user_id ${user_id}`)
             // window.location = '/'
         }
+        console.log(`Fetching data: ${user_id}, ${game_id}`)
         this.fetchData(user_id, game_id)
     }
 
     fetchData(user_id, game_id) {
         Axios.get(this.API_URL + "game/" + game_id).then(
             (response) => {
-                console.log(`response: ${response}`)
                 if(response['status'] === 200) {
                     const data = response['data']
-                    const player1 = data['player1_req']
-                    const player2 = data['player2_req']
-                    const isCurrPlayer1 = player1['user_id'] === parseInt(user_id)
+                    const player1 = data['p1_user_id']
+                    const player2 = data['p2_user_id']
+                    const isCurrPlayer1 = player1 === parseInt(user_id)
                     this.setState({
                         game_id: parseInt(game_id),
                         currUser: isCurrPlayer1 ? player1 : player2,
                         otherUser: isCurrPlayer1 ? player2 : player1
                     }, () => {
+                        console.log(`callback called`)
                         this.setupChat()
                     })
                 }

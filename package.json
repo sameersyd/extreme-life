@@ -5,7 +5,7 @@
   "dependencies": {
     "@babylonjs/gui": "^4.2.0",
     "@babylonjs/materials": "^4.2.0",
-    "@testing-library/jest-dom": "latest",
+    "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "latest",
     "@testing-library/user-event": "latest",
     "axios": "latest",
@@ -14,9 +14,9 @@
     "babylonjs-hook": "^0.1.0",
     "pubnub": "^4.35.0",
     "react": "latest",
-    "react-babylonjs": "^3.0.30",
+    "react-babylonjs": "^3.0.31",
     "react-dom": "latest",
-    "react-router-dom": "latest",
+    "react-router-dom": "^6.2.1",
     "react-scripts": "^4.0.3",
     "react-spring": "latest",
     "web-vitals": "latest"
