@@ -1,10 +1,12 @@
+import * as BABYLON from '@babylonjs/core';
+
 class Cell {
     constructor(mesh) {
         this.mesh = mesh;
         this.isSelected = false;
-        this._diffuseColor = null;
-        this._ambientColor = null;
-        this._emissiveColor = null;
+        this._diffuseColor = new BABYLON.Color4(0, 0, 0);
+        this._ambientColor = new BABYLON.Color4(0, 0, 0);
+        this._emissiveColor = new BABYLON.Color4(0, 0, 0);
         this.type = null;
     }
 
@@ -52,6 +54,14 @@ class Cell {
 
     set isPickable(pickable) {
         this.mesh.isPickable = pickable;
+    }
+
+    dispose() {
+        if (this.mesh !== null) {
+            this.mesh.material.dispose();
+            this.mesh.dispose();
+            this.mesh = null;
+        }
     }
 
     // set position(pos) {

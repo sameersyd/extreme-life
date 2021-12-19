@@ -8,7 +8,6 @@ import { GridMaterial } from "@babylonjs/materials/grid";
 import Cell from './Cell.jsx';
 let pendingSubmit = false;
 let pendingPut = false;
-let offset = 0;
 
 const API_URL = "https://www.comp680elgame.tk/";
 
@@ -110,8 +109,8 @@ const getUserID = () => {
 
 const getUserNames = (p1_user_id, p2_user_id) => {
     Axios.get(API_URL + "profile/").then(res => {
-        console.log(`get returned: ${res}`);
-        console.log(`get returned: ${res.status}`);
+        // console.log(`get returned: ${res}`);
+        // console.log(`get returned: ${res.status}`);
         let p1, p2;
         res.data.forEach(profile => {
             if (profile.user_id === p1_user_id) p1 = profile.username;
@@ -122,7 +121,8 @@ const getUserNames = (p1_user_id, p2_user_id) => {
 
 
 const setCamera = () => {
-    gm.camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), gm.scene);
+    // gm.camera = new BABYLON.ArcRotateCamera("camera1", new BABYLON.Vector3(0, 5, -10), gm.scene);
+    gm.camera = new BABYLON.ArcRotateCamera("camera1", 0, 0, 10, new BABYLON.Vector3(0, 0, 0), gm.scene);
     gm.camera.setTarget(BABYLON.Vector3.Zero());
     gm.camera.attachControl(gm.canvas, true);
 }
@@ -387,8 +387,8 @@ const createPickedCellDisplay = () => {
 const onPointerPick = (scene, header) => {
     scene.onPointerPick = function (evt, pickResult) {
         // We try to pick an object
-        console.log(`evt: ${evt}`);
-        console.log(`pickedResult: ${pickResult}`);
+        // console.log(`evt: ${evt}`);
+        // console.log(`pickedResult: ${pickResult}`);
         if (pickResult.hit) {
             let meshName = pickResult.pickedMesh.name;
             header.textContent = meshName;
@@ -416,7 +416,7 @@ const updatePickedCell = cellID => {
     let pickedCell = gm.cells[pos[0]][pos[1]];
     if (!pickedCell.isSelected) {
         if (gm.turnsLeft > 0) {
-            pickedCell.material.emissiveColor = new BABYLON.Color4(0.2, 0.2, 0.5);
+            pickedCell.material.emissiveColor.set(0.2, 0.2, 0.5);
             pickedCell.isSelected = true;
             pickedCell.updateType = gm.cellTypeSelected;
             pickedCell.update_team_number = gm.team_number;
@@ -424,7 +424,8 @@ const updatePickedCell = cellID => {
         }
     }
     else {
-        pickedCell.material.emissiveColor = new BABYLON.Color4(0, 0, 0);
+        pickedCell.material.emissiveColor.set(0, 0, 0);
+        // pickedCell.material.emissiveColor = new BABYLON.Color4(0, 0, 0);
         pickedCell.isSelected = false;
         pickedCell.updateType = undefined;
         pickedCell.update_team_number = undefined;
@@ -435,9 +436,12 @@ const updatePickedCell = cellID => {
 
 const onRender = () => {
     if (gm.cells !== null && gm.cells !== undefined) {
-        // getNextState(gm.game_id);
+        // console.log('pendingPut: ' + pendingPut);
+        // if (pendingPut === false) {
+        //     getNextState(gm.game_id);
+        // }
         gm.setState();
-        gm.simglow();
+        // gm.simglow();
     }
     let subbutton = gm.gui.getButton('submit').button;
     if (pendingSubmit && subbutton.isEnabled) {
@@ -452,7 +456,11 @@ const onRender = () => {
 
 async function getNextState(game_id) {
     // put-get requests
-    gm.putState(game_id);
+    const put = async function() {
+        pendingPut = true;
+        gm.putState(game_id);
+    };
+    put().then(() => pendingPut = false).catch(() => pendingPut = false);
 }
 
 
@@ -480,37 +488,43 @@ class GameManager {
         var gridWidth = this.configurations['gridWidth'];
         var cellWidth = this.configurations['cellWidth'];
         // first cell position in rows position plus half unit size.
-        offset = -(gridWidth - Math.ceil(cellWidth)) / 2;
+        if (this.cells !== undefined) this.cells.forEach(cells => {
+            cells.forEach(cell => {
+                cell.dispose();
+                cell = null;
+            });
+            cells = null;
+        });
         this.cells = [];
+        let i = 0;
         for (let x = 0; x < gridWidth; x++) {
             this.cells.push([]);
             for (let z = 0; z < gridWidth; z++) {
                 this.cells[x].push(new Cell(new BABYLON.MeshBuilder.CreateBox(`cell ${x}-${z}`, { size: cellWidth }, this.scene)));
                 this.cells[x][z].material = new BABYLON.StandardMaterial('default', this.scene);
-                this.cells[x][z].material.specularColor = new BABYLON.Color4(1,1,1);
-                this.cells[x][z].position.z = offset + z;
-                this.cells[x][z].position.x = offset + x;
+                this.cells[x][z].position.z = gm.configurations.offset + z;
+                this.cells[x][z].position.x = gm.configurations.offset + x;
                 this.cells[x][z].position.y = cellWidth / 2;
                 this.cells[x][z].isPickable = true;
                 this.cells[x][z].team_number = 0;
+                i++;
             }
         }
-
-        this.cells.forEach(cells => cells.forEach(cell => console.log(`cell x: ${cell.position.x} y: ${cell.position.y}`)));
+        // this.cells.forEach(cells => console.log(`cells.length: ${cells.length}`));
+        // this.cells.forEach(cells => cells.forEach(cell => console.log(`cell x: ${cell.position.x} y: ${cell.position.y}`)));
     }
 
     setState = () => {
         if (this.cellsInput !== null && this.cells !== undefined) {
             this.resetState();
-            this.cells.forEach(cell => console.log(`cell: ${cell}`));
             this.cellsInput.forEach(cell => {
                 let currCell = this.cells[cell["x_loc"]][cell["y_loc"]];
-                currCell.diffuseColor = (cell['team_number'] === 1) ? new BABYLON.Color4(0, 1, 0) : new BABYLON.Color4(1, 0, 0);
+                if (cell['team_number'] === 1) currCell.diffuseColor.set(0, 1, 0); // set to player 1 to green.
+                else currCell.diffuseColor.set(1, 0, 0); // set player 2 to red.
                 currCell.team_number = cell['team_number'];
                 currCell.type = cell['cell_type'];
                 currCell.life = cell['life'];
                 currCell.resilience = cell['resilience'];
-                // console.log(`${currCell.position.x}, ${currCell.position.y}, ${currCell.team_number}, ${currCell.type}`);
             })
             this.cellsInput = null;
         }
@@ -524,7 +538,7 @@ class GameManager {
 
     updateState = () => {
         // remove resetState from within getState and replace.
-        this.resetState();
+        // this.resetState();
         this.getState(this.game_id);
     }
 
@@ -532,22 +546,22 @@ class GameManager {
     async sendState(user_id, game_id) {
         // serialize data.
         let cell_placements = [];
-        console.log(this.cells);
+        // console.log(this.cells);
         this.cells.forEach(cells => {
             cells.forEach(cell => {
                 let type = cell.updateType ? cell.updateType : cell.type;
                 let team_number = cell.update_team_number ? cell.update_team_number : cell.team_number;
-                console.log(`${cell.position.x}, ${cell.position.y}`);
-                console.log(type);
-                console.log(`cell.team_number: ${cell.team_number}`);
-                console.log(`this.team_number: ${this.team_number}`);
+                // console.log(`${cell.position.x}, ${cell.position.y}`);
+                // console.log(type);
+                // console.log(`cell.team_number: ${cell.team_number}`);
+                // console.log(`this.team_number: ${this.team_number}`);
                 if (type !== null && type !== undefined && team_number === this.team_number) {
                     let team_number = cell.update_team_number ? cell.update_team_number : cell.team_number;
                     cell_placements.push({
                         'cell_type': type,
                         'team_number': team_number,
-                        'x_loc': cell.position.x - offset,
-                        'y_loc': cell.position.z - offset
+                        'x_loc': cell.position.x - gm.configurations.offset,
+                        'y_loc': cell.position.z - gm.configurations.offset
                     });
                 }
             })
@@ -558,7 +572,7 @@ class GameManager {
             'cell_placements': cell_placements
         }
 
-        console.log(`data: ${data}`);
+        // console.log(`data: ${data}`);
         // api call with data
         await this.patchState(game_id, data);
     }
@@ -580,15 +594,16 @@ class GameManager {
     }
 
     async putState(game_id) {
-        console.log(`team_number: ${this.team_number}`)
+        // console.log(`team_number: ${this.team_number}`)
         if (this.team_number !== 1) {
             this.getState(this.game_id);
             return
         }
         
         Axios.put(API_URL + "game/" + game_id).then(res => {
-            this.getState(this.game_id);
-        }).catch(err => {
+            // this.resetState();
+            this.getDataFromResponse(res);
+            this.setNewState(res.data.current_state.player_occupied_cells);        }).catch(err => {
             console.error(`put err: ${err}`);
         })
     }
@@ -596,7 +611,7 @@ class GameManager {
     async getState(game_id) {
         // Send get request to backend.
         Axios.get(API_URL + "game/" + game_id).then(res => {
-            this.resetState();
+            // this.resetState();
             this.getDataFromResponse(res);
             this.setNewState(res.data.current_state.player_occupied_cells);
         })
@@ -606,6 +621,8 @@ class GameManager {
         await Axios.get(API_URL + "game/" + game_id).then(res => {
             this.configurations["gridWidth"] = res.data.grid_length;
             this.configurations["maxTurns"] = res.data.max_turns;
+            this.configurations["offset"] = -(this.configurations["gridWidth"] - Math.ceil(this.configurations["cellWidth"])) / 2;
+
             createGrid();
         })
     }
@@ -613,22 +630,22 @@ class GameManager {
     getDataFromResponse = (res) => {
         this.current_turn = res.data.current_state.current_turn;
         this.score_card = res.data.score_card;
-        console.log(`this.team_number: ${this.team_number}`);
+        // console.log(`this.team_number: ${this.team_number}`);
         if (this.team_number === null) {
-            console.log(`res.data.p1_user_id: ${res.data.p1_user_id}, gm.user_id: ${gm.user_id}`);
-            console.log(`res.data.p1_user_id === gm.user_id ${res.data.p1_user_id === parseInt(gm.user_id)}`);
+            // console.log(`res.data.p1_user_id: ${res.data.p1_user_id}, gm.user_id: ${gm.user_id}`);
+            // console.log(`res.data.p1_user_id === gm.user_id ${res.data.p1_user_id === parseInt(gm.user_id)}`);
             this.team_number = (res.data.p1_user_id === parseInt(gm.user_id)) ? 1 : -1;
             gm.camera.position = new BABYLON.Vector3(0, 5, -10 * this.team_number);
             gm.camera.setTarget(BABYLON.Vector3.Zero());
 
         }
-        console.log(`awaiting_p1: ${res.data.awaiting_p1}`);
-        console.log(`awaiting_p2: ${res.data.awaiting_p2}`);
+        // console.log(`awaiting_p1: ${res.data.awaiting_p1}`);
+        // console.log(`awaiting_p2: ${res.data.awaiting_p2}`);
         this.gui.buttons.submit.button.isEnabled = this.team_number === 1 ? res.data.awaiting_p1 : res.data.awaiting_p2;
         
         if (res.data.is_game_over) {
             this.is_game_over = true;
-            // this.gui.getButton("gameover").button.isVisible = false;
+            this.gui.getButton("gameover").button.isVisible = true;
         }
     }
 
