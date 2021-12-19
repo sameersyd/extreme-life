@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import './Match.css';
-import { Spring, animated } from 'react-spring'
+// import { Spring, animated } from 'react-spring'
 import Axios from 'axios';
 import Game from '../Game/Game.jsx';
 
 class Match extends Component {
+    API_URL = "https://www.comp680elgame.tk/";
 
     constructor(props) {
         super(props)
@@ -22,15 +23,16 @@ class Match extends Component {
         const game_id = url.pop()
         const user_id = url.pop()
         if(game_id === undefined || user_id === undefined || game_id === '' || user_id === '') {
-            alert('Unable to load game')
-            window.location = '/'
+            alert(`Unable to load game: game_id ${game_id}, user_id ${user_id}`)
+            // window.location = '/'
         }
         this.fetchData(user_id, game_id)
     }
 
     fetchData(user_id, game_id) {
-        Axios.get("http://localhost:8000/game/" + game_id).then(
+        Axios.get(this.API_URL + "game/" + game_id).then(
             (response) => {
+                console.log(`response: ${response}`)
                 if(response['status'] === 200) {
                     const data = response['data']
                     const player1 = data['player1_req']
@@ -44,8 +46,8 @@ class Match extends Component {
                 }
             }
         ).catch(function(error) {
-            alert('Unable to load game')
-            window.location = '/'
+            alert(`Unable to load game: ${error}`)
+            // window.location = '/'
         });
     }
 

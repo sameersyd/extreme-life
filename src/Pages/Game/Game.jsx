@@ -14,8 +14,8 @@ const API_URL = "https://www.comp680elgame.tk/";
 // var cellsInput = [];
 
 // const user_id = 63630;
-const user_id = 3902;
-const game_id = 65045;
+// const user_id = 3902;
+// const game_id = 65045;
 
 // const UPDATE_DELAY_MS = 1000;
 
@@ -35,6 +35,7 @@ var gm;
 
 const onSceneReady = (scene) => {
     getUserID();
+    let game_id = gm.game_id;
     gm.canvas = scene.getEngine().getRenderingCanvas();
     gm.scene = scene;
     gm.gui = new UIManager();
@@ -94,8 +95,9 @@ const createGrid = () => {
 }
 
 const getUserID = () => {
-    let _user_id = window.location.href;
-    console.log(`_user_id ${_user_id}`);
+    let username_game_id = window.location.href.split('/').splice(4);
+    gm.user_id = username_game_id[0];
+    gm.game_id = username_game_id[1];
 }
 
 
@@ -160,7 +162,7 @@ const setSubmitButton = (gui) => {
             pendingSubmit = true;
             button.isEnabled = false;
             button.background = 'gray';
-            gm.sendState(user_id, game_id);
+            gm.sendState(gm.user_id, gm.game_id);
             gm.turnsLeft = 0;
             // gm.gui.getButton("gameover").button.isVisible = true;
 
@@ -587,12 +589,17 @@ class GameManager {
     getDataFromResponse = (res) => {
         this.current_turn = res.data.current_state.current_turn;
         this.score_card = res.data.score_card;
+        console.log(`this.team_number: ${this.team_number}`);
         if (this.team_number === null) {
-            this.team_number = (res.data.p1_user_id === user_id) ? 1 : -1;
+            this.team_number = (res.data.p1_user_id === gm.user_id) ? 1 : -1;
             gm.camera.position = new BABYLON.Vector3(0, 5, -10 * this.team_number);
             gm.camera.setTarget(BABYLON.Vector3.Zero());
 
         }
+        console.log(`awaiting_p1: ${res.data.awaiting_p1}`);
+        console.log(`awaiting_p2: ${res.data.awaiting_p2}`);
+        this.gui.buttons.submit.button.isEnabled = this.team_number === 1 ? res.data.awaiting_p1 : res.data.awaiting_p2;
+        
         if (res.data.is_game_over) {
             this.is_game_over = true;
             // this.gui.getButton("gameover").button.isVisible = false;
