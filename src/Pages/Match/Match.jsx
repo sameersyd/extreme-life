@@ -29,7 +29,7 @@ class Match extends Component {
         const user_id = url.pop()
         if(game_id === undefined || user_id === undefined || game_id === '' || user_id === '') {
             alert(`Unable to load game: game_id ${game_id}, user_id ${user_id}`)
-            // window.location = '/'
+            window.location = '/'
         }
         console.log(`Fetching data: ${user_id}, ${game_id}`)
         this.fetchData(user_id, game_id)
@@ -45,18 +45,42 @@ class Match extends Component {
                     const isCurrPlayer1 = player1 === parseInt(user_id)
                     this.setState({
                         game_id: parseInt(game_id),
-                        currUser: isCurrPlayer1 ? player1 : player2,
-                        otherUser: isCurrPlayer1 ? player2 : player1
+                        currUser: { user_id : (isCurrPlayer1 ? player1 : player2) } ,
+                        otherUser: { user_id : (isCurrPlayer1 ? player2 : player1) }
                     }, () => {
                         console.log(`callback called`)
+                        this.fetchUsernames()
                         this.setupChat()
                     })
                 }
             }
         ).catch(function(error) {
             alert(`Unable to load game: ${error}`)
-            // window.location = '/'
+            window.location = '/'
         });
+    }
+
+    fetchUsernames() {
+        Axios.get(this.API_URL + "profile").then(
+            (response) => {
+                if (response.status === 200) {
+                    response.data.forEach(profile => {
+                        if (profile.user_id === this.state.otherUser.user_id) {
+                            let otherUser = { ...this.state.otherUser }
+                            otherUser.username = profile.username
+                            this.setState({ otherUser: otherUser })
+                        }
+                        else if (profile.user_id === this.state.currUser.user_id) {
+                            let currUser = { ...this.state.currUser }
+                            currUser.username = profile.username
+                            this.setState({ currUser: currUser })
+                        }
+                        if (this.state.currUser.username && this.state.otherUser.username) return
+                    })
+                    
+                }
+            }
+        )    
     }
 
     sendMessage() {
@@ -120,7 +144,7 @@ class Match extends Component {
                                 <h1 className="match-username">{this.state.otherUser['username']}</h1>
                             </div>
                         </div>
-                        <Game />
+                        <Game currUser={this.state.currUser} otherUser={this.state.otherUser}/>
                     </div>
                     <div className="match-divider"/>
                     <div className="match-trailing-container">

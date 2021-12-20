@@ -4,14 +4,6 @@ import PubNub from 'pubnub';
 Usage:
 
 let chatClient = new ChatClient(<user-name>, <unique-user-id>, <game-id>, <message-display-call-back-function>, [url-to-api]);
-chatClient.pubnub.addListener({
-  message: function (event) {
-    chatClient.listenMessages(event);
-  },
-  status: function (event) {
-    chatClient.listenStatus(event);
-  }
-});
 
 */
 
@@ -23,8 +15,8 @@ class ChatClient {
         this.uuid = uuid;
         this.sessionid = sessionid;
         this.channel = this.get_channel(apiurl);
-        let keys = this.get_keys(apiurl);
         this.callback = msgcallback;
+        let keys = this.get_keys(apiurl);
         this.pubnub = this.connect(keys.pub, keys.sub);
         this.listenMessages = this.listenMessages.bind(this);
         this.listenStatus = this.listenStatus.bind(this);

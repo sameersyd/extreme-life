@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 import SceneComponent from 'babylonjs-hook'; // if you install 'babylonjs-hook' NPM.
 import * as BABYLON from '@babylonjs/core';
 // import { GUI } from '@babylonjs/core';
@@ -6,21 +6,14 @@ import Axios from 'axios';
 import * as GUI from '@babylonjs/gui';
 import { GridMaterial } from "@babylonjs/materials/grid";
 import Cell from './Cell.jsx';
-let pendingSubmit = false;
-let pendingPut = false;
+import UIManager from "./UIManager.js";
 
 const API_URL = "https://www.comp680elgame.tk/";
 
-// var cellsInput = [];
-
-// const user_id = 63630;
-// const user_id = 3902;
-// const game_id = 65045;
-
-// const UPDATE_DELAY_MS = 1000;
-
 var gm;
-// var gui;
+let pendingSubmit = false;
+
+// Need backend logic before requesting updates, or game ends as soon as it loads.
 
 /*
     End game? How to end a game?
@@ -36,6 +29,7 @@ var gm;
 const onSceneReady = (scene) => {
     getUserID();
     let game_id = gm.game_id;
+    console.log(`opponame: ${gm.opponame}`);
     gm.canvas = scene.getEngine().getRenderingCanvas();
     gm.scene = scene;
     gm.gui = new UIManager();
@@ -58,12 +52,13 @@ const onSceneReady = (scene) => {
     // let butHeight = '5%';
     
     setUpdateButton(gm.gui);
+    // setSkybox();
 
     setupActionMenu(gm);
-
     gm.getGameConfig(game_id);
     gm.resetState();
     gm.getState(game_id);
+    console.log(Date.now());
 };
 
 
@@ -80,7 +75,8 @@ const setupActionMenu = (gm) => {
         setDefendButton,
         // setReplicateButton, 
         // setInfectButton, 
-        setWinnerTextButton
+        setWinnerTextButton,
+        setExitButton
     ];
     setButtons.forEach(setButton => {
         setButton(gm.gui, actionMenuTopAnchor, actionMenuLeftAnchor, actionMenuButtonSize);
@@ -107,21 +103,7 @@ const getUserID = () => {
 }
 
 
-const getUserNames = (p1_user_id, p2_user_id) => {
-    Axios.get(API_URL + "profile/").then(res => {
-        // console.log(`get returned: ${res}`);
-        // console.log(`get returned: ${res.status}`);
-        let p1, p2;
-        res.data.forEach(profile => {
-            if (profile.user_id === p1_user_id) p1 = profile.username;
-            if (profile.user_id === p2_user_id) p2 = profile.username; 
-        })
-        // if (profile.user_id === gm.)
-    })}
-
-
 const setCamera = () => {
-    // gm.camera = new BABYLON.ArcRotateCamera("camera1", new BABYLON.Vector3(0, 5, -10), gm.scene);
     gm.camera = new BABYLON.ArcRotateCamera("camera1", 0, 0, 10, new BABYLON.Vector3(0, 0, 0), gm.scene);
     gm.camera.setTarget(BABYLON.Vector3.Zero());
     gm.camera.attachControl(gm.canvas, true);
@@ -129,7 +111,7 @@ const setCamera = () => {
 
 
 const setWinnerTextButton = (gui) => {
-    let button = GUI.Button.CreateSimpleButton("gameover", "Player X Wins!");
+    let button = GUI.Button.CreateSimpleButton("gameover", "Game Over!");
     button.width = "40%"
     button.height = "40%";
     button.color = "white";
@@ -141,15 +123,41 @@ const setWinnerTextButton = (gui) => {
     button.onPointerUpObservable.add(function () {
         button.isEnabled = false;
         button.background = 'gray';
-        // button.textBlock.text = "shit!!";
         setWinnerText();
+        gui.getButton('submit').button.isVisible = false;
+        gui.getButton('exit').button.isVisible = true;
     });
     gui.addButton(button);
 }
 
 
 const setWinnerText = () => {
-    gm.gui.setButtonText("gameover", "The other guy won! HA!");
+    let card = gm.score_card;
+    let p1_wins = card.p1_score > card.p2_score;
+    let implayer1 = gm.team_number === 1;
+    let text = `${p1_wins ? (implayer1 ? gm.currname : gm.opponame) : (implayer1 ? gm.opponame : gm.currname)} wins!`;
+    if (implayer1) text += `\nYour score: ${card.p1_score}\n${gm.opponame} score: ${card.p2_score}`;
+    else text += `\nYour score: ${card.p2_score}\n${gm.opponame} score: ${card.p1_score}`;
+    gm.gui.setButtonText("gameover", `${text}`);
+}
+
+
+const setExitButton = (gui) => {
+    let button = GUI.Button.CreateSimpleButton("exit", "Exit");
+    button.textBlock.fontSize = "25%";
+    button.width = "20%"
+    button.height = "20%";
+    button.color = "white";
+    button.left = "39%";
+    button.top = "39%";
+    button.cornerRadius = 10;
+    button.background = "red";
+    button.isVisible = false;
+    
+    button.onPointerUpObservable.add(function () {
+        window.location = '/';
+    });
+    gui.addButton(button);
 }
 
 
@@ -200,7 +208,7 @@ const setBoosterButton = (gui) => {
 
 const setUpdateButton = (gui) => {
     let button = GUI.Button.CreateSimpleButton("update", "Update");
-    button.textBlock.fontSize = "25%";
+    button.textBlock.fontSize = "75%";
     button.width = "20%"
     button.height = "5%";
     button.color = "white";
@@ -436,9 +444,9 @@ const updatePickedCell = cellID => {
 
 const onRender = () => {
     if (gm.cells !== null && gm.cells !== undefined) {
-        // console.log('pendingPut: ' + pendingPut);
-        // if (pendingPut === false) {
+        // if (!gm.is_game_over && !gm.waitingOnUpdateResponse && gm.isTimeForUpdate(3000)) {
         //     getNextState(gm.game_id);
+        //     gm.setLastTimeUpdated();
         // }
         gm.setState();
         // gm.simglow();
@@ -457,10 +465,11 @@ const onRender = () => {
 async function getNextState(game_id) {
     // put-get requests
     const put = async function() {
-        pendingPut = true;
+        gm.waitingOnUpdateResponse = true;
         gm.putState(game_id);
     };
-    put().then(() => pendingPut = false).catch(() => pendingPut = false);
+    put().then(() => gm.waitingOnUpdateResponse = false)
+        .catch(() => gm.waitingOnUpdateResponse = false);
 }
 
 
@@ -469,6 +478,8 @@ class GameManager {
         this.scene = null;
         this.gui = null;
         this.canvas = null;
+        this.ground = null;
+        this.skybox = null;
         this.cells = undefined;
         this.cellsInput = null;
         this.lights = {};
@@ -478,7 +489,18 @@ class GameManager {
         this.boosters = new Boosters();
         this.is_game_over = false;
         this.team_number = null;
+        this.lastUpdateTime = Date.now();
+        this.waitingOnUpdateResponse = false;
     }
+
+    isTimeForUpdate = (deltaMiSec) => {
+        return deltaMiSec <= (Date.now() - this.lastUpdateTime);
+    }
+
+    setLastTimeUpdated = () => {
+        this.lastUpdateTime = Date.now();
+        return this.lastUpdateTime;
+    } 
 
     simglow() {
         this.configurations["glowLayer"].intensity += Math.random() * 0.05 * (Math.round(Math.random()) ? 1 : -1); 
@@ -496,7 +518,6 @@ class GameManager {
             cells = null;
         });
         this.cells = [];
-        let i = 0;
         for (let x = 0; x < gridWidth; x++) {
             this.cells.push([]);
             for (let z = 0; z < gridWidth; z++) {
@@ -507,11 +528,8 @@ class GameManager {
                 this.cells[x][z].position.y = cellWidth / 2;
                 this.cells[x][z].isPickable = true;
                 this.cells[x][z].team_number = 0;
-                i++;
             }
         }
-        // this.cells.forEach(cells => console.log(`cells.length: ${cells.length}`));
-        // this.cells.forEach(cells => cells.forEach(cell => console.log(`cell x: ${cell.position.x} y: ${cell.position.y}`)));
     }
 
     setState = () => {
@@ -659,45 +677,46 @@ class GameManager {
     }
 }
 
-class UIManager {
-    constructor() {
-        this.gui = GUI.AdvancedDynamicTexture.CreateFullscreenUI("manager");
-        this.gui.isForeground = true;
-        this.buttons = {};
-    }
 
-    addButton = (btn, group) => {
-        this.buttons[btn.name] = {
-            'button': btn,
-            'group': group
-        };
-        btn.isPointerBlocker = true;
-        this.gui.addControl(this.buttons[btn.name].button);
-    }
-
-    getButton = name => {
-        return this.buttons[name];
-    }
-
-    setButtonText = (name, text) => {
-        this.getButton(name).button.textBlock.text = text;
-    }
+const setSkybox = () => {
+    gm.skybox = BABYLON.MeshBuilder.CreateBox("skybox", { size: 1000.0 }, gm.scene);
+    let skyboxMaterial = new BABYLON.StandardMaterial("skybox", gm.scene);
+    skyboxMaterial.backFaceCulling = false;
+    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("textures/skybox", gm.scene);
+    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+    gm.skybox.material = skyboxMaterial;
 }
-
 
 gm = new GameManager();  // GameManager
 
 
+class Game extends Component {
+    // constructor(props) {
+    //     super(props)
+    //     console.log(`props.currUsername: ${props.currUsername}`)
+    //     this.state = {
+    //         currUsername: props.currUsername,
+    //         otherUsername: props.otherUsername
+    //     }
+    //     console.log(`this.state.currUsername: ` + this.state.currUsername);
+    //     console.log(`this.state.otherUsername: ${this.state.otherUsername}`)
+    // }
 
-
-const Game = () => (
-    <div>
-        <script type="text/javascript"></script>
-        <SceneComponent antialias onSceneReady={onSceneReady} onRender={onRender} id="my-canvas" style={{ width: '100%', height: '100%' }} />
-    </div>
-);
-
-
+    render() { 
+        if (!this.props.currUser) return null
+        if (!this.props.otherUser) return null
+        gm.username = this.props.currUser.username
+        gm.opponame = this.props.otherUser.username
+        return(
+            <div>
+                <script type="text/javascript"></script>
+                <SceneComponent antialias onSceneReady={onSceneReady} onRender={onRender} id="my-canvas" style={{ width: '100%', height: '100%' }} />
+            </div>
+        );
+    }
+}
 
 
 export default Game;
