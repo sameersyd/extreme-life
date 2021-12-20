@@ -84,6 +84,12 @@ class Match extends Component {
     }
 
     sendMessage() {
+        // make sure username is assigned.
+        if (this.state.msgObj.username === undefined) {
+            const msgObjTemp = this.state.msgObj
+            msgObjTemp.username = this.state.currUser["username"]
+            this.setState({ msgObj: msgObjTemp })
+        }
         const msgObj = this.state.msgObj
         msgObj.sendMessage(this.state.msgTF)
         this.setState({ msgTF: '' })
@@ -101,6 +107,9 @@ class Match extends Component {
 
     msgcallback(message) {
         var msgs = this.state.messages
+        console.log(message)
+        console.log(message.message)
+        console.log(message.sender_id)
         msgs.push(message)
         this.setState({ messages: msgs })
     }
@@ -118,7 +127,7 @@ class Match extends Component {
                     {this.state.messages.map((msgObj, k) => {
                         const isSent = msgObj.id === this.state.currUser["user_id"]
                         return(
-                            <h1 className={isSent ? 'match-message-msgs-sent-title' : 'match-message-msgs-received-title'}>{msgObj.message}</h1>
+                            <h1 className={isSent ? 'match-message-msgs-sent-title' : 'match-message-msgs-received-title'}>{`${msgObj.sender_id}: ${msgObj.message}`}</h1>
                         )
                     })}
                 </div>

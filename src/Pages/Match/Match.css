@@ -11,7 +11,11 @@
 	font-family: Circe-ExtraBold;
 }
 
-body { margin: 0 }
+body { 
+    margin: 0;
+    max-height: 100vw;
+
+}
 
 .match-disableInteraction {
     pointer-events: none;
@@ -26,11 +30,14 @@ body { margin: 0 }
 .match-container {
     display: flex;
     flex-direction: row;
+    max-height: 50vw;
 }
 
 .match-leading-container {
     flex-grow: 100;
 	margin: 10px 0px 0px 50px;
+    max-height: 100%;
+
 }
 
 .match-header {
@@ -83,6 +90,7 @@ body { margin: 0 }
     display: flex;
     flex-direction: column;
     justify-content: center;
+    max-height: 100%;
 }
 
 /* Message */
@@ -90,6 +98,7 @@ body { margin: 0 }
 .match-trailing-message {
     width: 280px;
     margin-top: auto;
+    max-height: 50%;
     background-color: #ffffff40;
     display: flex;
     flex-direction: column;
@@ -101,7 +110,7 @@ body { margin: 0 }
     font-size: 30px;
     color: white;
     align-self: center;
-    margin-top: 100px;
+    margin-top: 10%;
 }
 
 .match-trailing-message-container {
@@ -111,6 +120,7 @@ body { margin: 0 }
     align-items: center;
     margin-left: 8px;
     margin-right: 8px;
+    max-height: auto;
 }
 
 .match-trailing-message-sendBtn {
@@ -145,10 +155,14 @@ body { margin: 0 }
 }
 
 .match-messages-list {
-    max-height: 375px;
+    height: 100%;
+    max-height: 100%;
     display: flex;
     flex-direction: column;
-    overflow-y: scroll
+    scrollbar-width: none;
+    overflow-y: scroll;
+    position : relative; 
+    bottom:0;
 }
 
 /* Message Cell */
@@ -157,14 +171,22 @@ body { margin: 0 }
     font-family: Circe-Regular;
 	font-size: 13px;
     color: #ffffff;
+    width: 90%;
 }
 
 .match-message-msgs-sent-title {
     margin-left: auto;
     margin-right: 10px;
+    text-align: right;
 }
 
 .match-message-msgs-received-title {
     margin-right: auto;
     margin-left: 10px;
+    text-align: left;
+}
+
+
+::-webkit-scrollbar {
+     display: none;
 }

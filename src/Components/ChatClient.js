@@ -11,6 +11,7 @@ class ChatClient {
 
     // considering getting keys from with in component.
     constructor(username, uuid, sessionid, msgcallback, apiurl = 'https://www.comp680elgame.tk:8000') {
+        console.log(`username: ${username}`);
         this.username = username;
         this.uuid = uuid;
         this.sessionid = sessionid;
@@ -80,10 +81,11 @@ class ChatClient {
     submitUpdate(message) {
         if (!message.message) return;
         // send the message.
+        console.log(`this.username: ${this.username}`);
         this.pubnub.publish({
             channel: this.channel,
             message: {
-                'entry': this.username,
+                'sender_id': this.username,
                 'update': message.message,
                 'uuid': message.id
             }
@@ -102,9 +104,10 @@ class ChatClient {
     listenMessages(event) {
         const pushMessage = event.message.update !== "has joined."
         if(pushMessage) {
+            console.log(`listenMessages: ${event.message}`);
             this.callback(new Message(
                 event.message.uuid,
-                event.message.entry,
+                event.message.sender_id,
                 event.message.update,
                 event.timetoken
             ));
@@ -112,7 +115,6 @@ class ChatClient {
     }
 
     listenStatus(event) {
-        // this.callback(new Message(this.uuid, this.username, `subscribed to "${this.pubnub.getSubscribedChannels()}"`));
         // player has joined the chat.
         if (event.category === 'PNConnectedCategory') {
             this.submitUpdate(new Message(this.uuid, this.username, 'has joined.'));
