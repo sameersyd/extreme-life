@@ -1,27 +1,18 @@
-Extreme Life
-# Development
-## Fresh install
+![GitHub Cards Preview](https://github.com/sameersyd/extreme-life/blob/master/art/Home.png)
 
-From the root directory of this repository run:
-```
-rm package-lock.json
-rm -rf node_modules/
-npm install
-npm audit fix --force
-npm run build
+# Extreme Life
+A Multiplayer interactive game, developed based on **Conway's Game of Life**.
+The web app is built using,
+- ReactJS - FrontEnd of the Web App
+- BabylonJS - Creating 3D objects and cells
 
-```
+Server [ExtremeLifeServer](https://github.com/guywilsonjr/ExtremeLifeServer)
+- FastAPI - For REST API
 
+<br/>
 
-## Start Server
-From the root directory of this repository run: `npm start`
+![GitHub Cards Preview](https://github.com/sameersyd/extreme-life/blob/master/art/Game.png)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<br/>
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### Current Routes
- * http://localhost:3000/
- * http://localhost:3000/game
+This is a college project, not all features of the game work, such as uploading custom scripts or activating boosters.
