@@ -15,4 +15,6 @@ Server [ExtremeLifeServer](https://github.com/guywilsonjr/ExtremeLifeServer)
 
 <br/>
 
-This is a college project, not all features of the game work, such as uploading custom scripts or activating boosters.
+### Note
+- This is a college project and not all features of the game work, such as uploading custom scripts or activating boosters.
+- For testing the game, use two tabs to create multiple players so they match with each other and proceed with game.
