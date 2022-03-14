@@ -1,6 +1,6 @@
 ![GitHub Cards Preview](https://github.com/sameersyd/extreme-life/blob/master/art/Home.png)
 
-# Extreme Life
+# [Extreme Life](https://extreme-life.herokuapp.com/)
 A Multiplayer interactive game, developed based on **Conway's Game of Life**.
 The web app is built using,
 - ReactJS - FrontEnd of the Web App
@@ -18,3 +18,4 @@ Server [ExtremeLifeServer](https://github.com/guywilsonjr/ExtremeLifeServer)
 ### Note
 - This is a college project and not all features of the game work, such as uploading custom scripts or activating boosters.
 - For testing the game, use two tabs to create multiple players so they match with each other and proceed with game.
+- Try this game [here](https://extreme-life.herokuapp.com/)
